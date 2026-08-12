@@ -60,6 +60,7 @@ export interface Perfil {
   apellido: string;
   email: string;
   activo: boolean;
+  is_demo: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -72,6 +73,7 @@ export interface Curso {
   anio_lectivo: number;
   docente_titular_id: string | null;
   activo: boolean;
+  is_demo: boolean;
   created_at: string;
 }
 
@@ -92,7 +94,7 @@ export interface Pregunta {
   capacidad: CapacidadEvaluada;
   dificultad: NivelDificultad;
   curso_id: string | null;
-  autor_id: string;
+  autor_id: string | null;
   estado: EstadoPregunta;
   created_at: string;
   updated_at: string;
@@ -131,6 +133,19 @@ export interface Evaluacion {
   config_automatica: ConfigAutomatica | null;
   estado: EstadoEvaluacion;
   creado_por: string;
+  is_demo: boolean;
+  created_at: string;
+}
+
+export interface AuditoriaAdmin {
+  id: string;
+  admin_id: string | null;
+  admin_email: string;
+  accion: string;
+  tabla_afectada: string;
+  registro_id: string | null;
+  cantidad_registros: number;
+  detalle: Record<string, unknown> | null;
   created_at: string;
 }
 

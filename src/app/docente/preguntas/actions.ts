@@ -2,7 +2,9 @@
 
 import { revalidatePath } from "next/cache";
 import { crearClienteServidor } from "@/lib/supabase/server";
+import { crearClienteAdmin } from "@/lib/supabase/admin";
 import { exigirPerfil } from "@/lib/auth";
+import { registrarAuditoria } from "@/lib/auditoria";
 import type {
   CapacidadEvaluada,
   EjeMatematico,
@@ -168,26 +170,86 @@ export async function cambiarEstadoPregunta(id: string, estado: EstadoPregunta) 
   revalidatePath("/admin/preguntas");
 }
 
-export async function eliminarPregunta(id: string) {
-  await exigirPerfil(["docente", "admin"]);
-  const supabase = await crearClienteServidor();
+export interface ResultadoAccionPregunta {
+  ok: boolean;
+  mensaje: string;
+}
 
-  const { count } = await supabase
+export interface ResumenEliminacionPregunta {
+  codigo: string;
+  enunciadoResumido: string;
+  evaluacionesQueLaUsan: number;
+  intentosQueLaUsan: number;
+  respuestasVinculadas: number;
+  tieneUsoHistorico: boolean;
+}
+
+/** Solo administradores: la eliminación permanente de preguntas nunca queda en manos de docentes. */
+export async function obtenerResumenEliminacionPregunta(id: string): Promise<ResumenEliminacionPregunta> {
+  await exigirPerfil(["admin"]);
+  const admin = crearClienteAdmin();
+
+  const { data: pregunta, error } = await admin
+    .from("preguntas")
+    .select("codigo,enunciado")
+    .eq("id", id)
+    .single();
+  if (error || !pregunta) throw new Error("No se encontró la pregunta.");
+
+  const { count: evaluacionesQueLaUsan } = await admin
     .from("evaluacion_preguntas")
     .select("id", { count: "exact", head: true })
     .eq("pregunta_id", id);
+  const { count: intentosQueLaUsan } = await admin
+    .from("intento_preguntas")
+    .select("id", { count: "exact", head: true })
+    .eq("pregunta_id", id);
+  const { count: respuestasVinculadas } = await admin
+    .from("respuestas_estudiante")
+    .select("id", { count: "exact", head: true })
+    .eq("pregunta_id", id);
 
-  if (count && count > 0) {
-    throw new Error(
-      "Esta pregunta ya fue usada en una evaluación y no puede eliminarse; podés archivarla en su lugar."
-    );
+  return {
+    codigo: pregunta.codigo,
+    enunciadoResumido: pregunta.enunciado.length > 140 ? `${pregunta.enunciado.slice(0, 140)}…` : pregunta.enunciado,
+    evaluacionesQueLaUsan: evaluacionesQueLaUsan ?? 0,
+    intentosQueLaUsan: intentosQueLaUsan ?? 0,
+    respuestasVinculadas: respuestasVinculadas ?? 0,
+    tieneUsoHistorico: (intentosQueLaUsan ?? 0) > 0,
+  };
+}
+
+/**
+ * Solo administradores. Requiere escribir "ELIMINAR PREGUNTA". Si la pregunta
+ * ya fue usada en intentos rendidos, borrarla arrastra (por ON DELETE CASCADE)
+ * los snapshots de intento_preguntas y las respuestas_estudiante asociadas: el
+ * llamador debe haber mostrado ese impacto antes de invocar esta acción.
+ */
+export async function eliminarPregunta(id: string, confirmacionTexto: string): Promise<ResultadoAccionPregunta> {
+  const quienAdmin = await exigirPerfil(["admin"]);
+  if (confirmacionTexto !== "ELIMINAR PREGUNTA") {
+    return { ok: false, mensaje: 'Debés escribir exactamente "ELIMINAR PREGUNTA" para confirmar.' };
   }
 
-  const { error } = await supabase.from("preguntas").delete().eq("id", id);
-  if (error) throw new Error(`No se pudo eliminar: ${error.message}`);
+  const admin = crearClienteAdmin();
+  const resumen = await obtenerResumenEliminacionPregunta(id);
+
+  const { error } = await admin.from("preguntas").delete().eq("id", id);
+  if (error) return { ok: false, mensaje: `No se pudo eliminar: ${error.message}` };
+
+  await registrarAuditoria({
+    admin: quienAdmin,
+    accion: "eliminar_pregunta_definitivo",
+    tablaAfectada: "preguntas",
+    registroId: id,
+    cantidadRegistros:
+      1 + resumen.evaluacionesQueLaUsan + resumen.intentosQueLaUsan + resumen.respuestasVinculadas,
+    detalle: { ...resumen },
+  });
 
   revalidatePath("/docente/preguntas");
   revalidatePath("/admin/preguntas");
+  return { ok: true, mensaje: `La pregunta ${resumen.codigo} fue eliminada definitivamente.` };
 }
 
 export interface FilaImportacion {

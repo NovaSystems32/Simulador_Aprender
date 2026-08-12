@@ -1,9 +1,15 @@
 "use client";
 
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import Link from "next/link";
 import { CAPACIDADES, DIFICULTADES, EJES, type Pregunta } from "@/lib/types";
-import { cambiarEstadoPregunta, duplicarPregunta, eliminarPregunta } from "@/app/docente/preguntas/actions";
+import {
+  cambiarEstadoPregunta,
+  duplicarPregunta,
+  eliminarPregunta,
+  obtenerResumenEliminacionPregunta,
+} from "@/app/docente/preguntas/actions";
+import { ConfirmacionPeligrosa } from "@/components/admin/ConfirmacionPeligrosa";
 
 const ETIQUETA_EJE = Object.fromEntries(EJES.map((e) => [e.value, e.label]));
 const ETIQUETA_CAPACIDAD = Object.fromEntries(CAPACIDADES.map((c) => [c.value, c.label]));
@@ -21,61 +27,93 @@ const ETIQUETA_ESTADO: Record<string, string> = {
   archivada: "Archivada",
 };
 
-function Acciones({ pregunta, basePath, pendiente, iniciarTransicion }: {
+function Acciones({ pregunta, basePath, esAdmin, pendiente, iniciarTransicion }: {
   pregunta: Pregunta;
   basePath: string;
+  esAdmin: boolean;
   pendiente: boolean;
   iniciarTransicion: (fn: () => void | Promise<void>) => void;
 }) {
+  const [mensaje, setMensaje] = useState<{ tipo: "ok" | "error"; texto: string } | null>(null);
+
   return (
-    <div className="flex flex-wrap gap-3 text-xs">
-      <Link href={`${basePath}/${pregunta.id}/editar`} className="font-medium text-violeta-600 hover:underline">
-        Editar
-      </Link>
-      <button
-        type="button"
-        disabled={pendiente}
-        onClick={() => iniciarTransicion(() => duplicarPregunta(pregunta.id))}
-        className="font-medium text-violeta-600 hover:underline disabled:opacity-50"
-      >
-        Duplicar
-      </button>
-      {pregunta.estado !== "archivada" ? (
+    <div className="flex flex-col gap-2">
+      <div className="flex flex-wrap gap-3 text-xs">
+        {esAdmin && (
+          <Link href={`${basePath}/${pregunta.id}`} className="font-medium text-violeta-600 hover:underline">
+            Ver
+          </Link>
+        )}
+        <Link href={`${basePath}/${pregunta.id}/editar`} className="font-medium text-violeta-600 hover:underline">
+          Editar
+        </Link>
         <button
           type="button"
           disabled={pendiente}
-          onClick={() => iniciarTransicion(() => cambiarEstadoPregunta(pregunta.id, "archivada"))}
-          className="font-medium text-advertencia hover:underline disabled:opacity-50"
-        >
-          Archivar
-        </button>
-      ) : (
-        <button
-          type="button"
-          disabled={pendiente}
-          onClick={() => iniciarTransicion(() => cambiarEstadoPregunta(pregunta.id, "borrador"))}
+          onClick={() => iniciarTransicion(() => duplicarPregunta(pregunta.id))}
           className="font-medium text-violeta-600 hover:underline disabled:opacity-50"
         >
-          Restaurar
+          Duplicar
         </button>
-      )}
-      <button
-        type="button"
-        disabled={pendiente}
-        onClick={() => {
-          if (confirm(`¿Eliminar definitivamente la pregunta ${pregunta.codigo}? Esta acción no se puede deshacer.`)) {
-            iniciarTransicion(() => eliminarPregunta(pregunta.id));
-          }
-        }}
-        className="font-medium text-error hover:underline disabled:opacity-50"
-      >
-        Eliminar
-      </button>
+        {pregunta.estado !== "archivada" ? (
+          <button
+            type="button"
+            disabled={pendiente}
+            onClick={() => iniciarTransicion(() => cambiarEstadoPregunta(pregunta.id, "archivada"))}
+            className="font-medium text-advertencia hover:underline disabled:opacity-50"
+          >
+            Archivar
+          </button>
+        ) : (
+          <button
+            type="button"
+            disabled={pendiente}
+            onClick={() => iniciarTransicion(() => cambiarEstadoPregunta(pregunta.id, "borrador"))}
+            className="font-medium text-violeta-600 hover:underline disabled:opacity-50"
+          >
+            Restaurar
+          </button>
+        )}
+        {/* La eliminación permanente queda separada de las acciones habituales y
+            solo la puede iniciar una cuenta administradora (también validado en el servidor). */}
+        {esAdmin && (
+          <ConfirmacionPeligrosa
+            triggerLabel="Eliminar definitivamente"
+            titulo={`Eliminar la pregunta ${pregunta.codigo}`}
+            descripcion={pregunta.enunciado.length > 140 ? `${pregunta.enunciado.slice(0, 140)}…` : pregunta.enunciado}
+            cargarResumen={async () => {
+              const r = await obtenerResumenEliminacionPregunta(pregunta.id);
+              return [
+                { etiqueta: "Evaluaciones que la usan", valor: r.evaluacionesQueLaUsan },
+                { etiqueta: "Intentos que la usan", valor: r.intentosQueLaUsan },
+                { etiqueta: "Respuestas vinculadas", valor: r.respuestasVinculadas },
+              ];
+            }}
+            advertenciaExtra="Si esta pregunta ya fue usada en evaluaciones rendidas, eliminarla también borra esos intentos/respuestas afectados. Si preferís conservar el historial, usá 'Archivar' en su lugar."
+            textoConfirmacion="ELIMINAR PREGUNTA"
+            labelConfirmar="Eliminar definitivamente"
+            onConfirmar={async () => {
+              const r = await eliminarPregunta(pregunta.id, "ELIMINAR PREGUNTA");
+              setMensaje({ tipo: r.ok ? "ok" : "error", texto: r.mensaje });
+              return r;
+            }}
+          />
+        )}
+      </div>
+      {mensaje && <p className={mensaje.tipo === "ok" ? "alerta-exito" : "alerta-error"}>{mensaje.texto}</p>}
     </div>
   );
 }
 
-export function TablaPreguntas({ preguntas, basePath }: { preguntas: Pregunta[]; basePath: string }) {
+export function TablaPreguntas({
+  preguntas,
+  basePath,
+  esAdmin = false,
+}: {
+  preguntas: Pregunta[];
+  basePath: string;
+  esAdmin?: boolean;
+}) {
   const [pendiente, iniciarTransicion] = useTransition();
 
   if (preguntas.length === 0) {
@@ -121,7 +159,7 @@ export function TablaPreguntas({ preguntas, basePath }: { preguntas: Pregunta[];
                   </span>
                 </td>
                 <td className="px-4 py-3">
-                  <Acciones pregunta={pregunta} basePath={basePath} pendiente={pendiente} iniciarTransicion={iniciarTransicion} />
+                  <Acciones pregunta={pregunta} basePath={basePath} esAdmin={esAdmin} pendiente={pendiente} iniciarTransicion={iniciarTransicion} />
                 </td>
               </tr>
             ))}
@@ -159,7 +197,7 @@ export function TablaPreguntas({ preguntas, basePath }: { preguntas: Pregunta[];
               </div>
             </dl>
             <div className="mt-3 border-t border-borde pt-3">
-              <Acciones pregunta={pregunta} basePath={basePath} pendiente={pendiente} iniciarTransicion={iniciarTransicion} />
+              <Acciones pregunta={pregunta} basePath={basePath} esAdmin={esAdmin} pendiente={pendiente} iniciarTransicion={iniciarTransicion} />
             </div>
           </div>
         ))}

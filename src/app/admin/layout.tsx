@@ -6,6 +6,7 @@ const ENLACES: EnlaceNav[] = [
   { href: "/admin/usuarios", label: "Usuarios", icono: "usuarios" },
   { href: "/admin/cursos", label: "Cursos", icono: "cursos" },
   { href: "/admin/preguntas", label: "Banco de preguntas", icono: "preguntas" },
+  { href: "/admin/gestion-datos", label: "Gestión de datos", icono: "historial" },
   { href: "/admin/configuracion", label: "Configuración", icono: "configuracion" },
 ];
 

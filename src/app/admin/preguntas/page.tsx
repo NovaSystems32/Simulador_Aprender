@@ -49,7 +49,7 @@ export default async function PaginaBancoPreguntasAdmin({
           No se pudo cargar el banco de preguntas: {error.message}
         </p>
       ) : (
-        <TablaPreguntas preguntas={preguntas} basePath="/admin/preguntas" />
+        <TablaPreguntas preguntas={preguntas} basePath="/admin/preguntas" esAdmin />
       )}
 
       <p className="text-xs text-slate-400">{preguntas.length} pregunta(s) en total</p>

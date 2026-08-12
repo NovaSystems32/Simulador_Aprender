@@ -51,7 +51,7 @@ export default async function PaginaBancoPreguntas({
           No se pudo cargar el banco de preguntas: {error.message}
         </p>
       ) : (
-        <TablaPreguntas preguntas={preguntas} basePath="/docente/preguntas" />
+        <TablaPreguntas preguntas={preguntas} basePath="/docente/preguntas" esAdmin={perfil.rol === "admin"} />
       )}
 
       <p className="text-xs text-slate-400">

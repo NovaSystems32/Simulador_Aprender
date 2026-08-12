@@ -51,3 +51,7 @@ next-env.d.ts
 # editores / SO
 .vscode/
 .idea/
+
+# configuración local de herramientas de desarrollo (no forma parte de la app)
+.claude/
+CLAUDE.md

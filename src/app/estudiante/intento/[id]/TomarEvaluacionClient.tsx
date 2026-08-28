@@ -161,7 +161,7 @@ export function TomarEvaluacionClient({ intentoId }: { intentoId: string }) {
         <div className="flex items-center gap-3">
           <Logo tamano="sm" />
           <div>
-            <p className="text-sm font-semibold text-violeta-800">{datos.evaluacion?.nombre}</p>
+            <p className="text-sm font-semibold text-azul-800">{datos.evaluacion?.nombre}</p>
             <p className="text-xs text-texto-secundario">
               Pregunta {indice + 1} de {preguntas.length} · {conteo.respondidas} respondidas · {conteo.sinResponder} pendientes
             </p>
@@ -172,7 +172,7 @@ export function TomarEvaluacionClient({ intentoId }: { intentoId: string }) {
             <button
               type="button"
               onClick={() => setMostrarCalculadora((v) => !v)}
-              className="flex items-center gap-1.5 rounded-lg border border-borde px-3 py-1.5 text-xs font-medium text-texto-secundario hover:bg-violeta-50"
+              className="flex items-center gap-1.5 rounded-lg border border-borde px-3 py-1.5 text-xs font-medium text-texto-secundario hover:bg-azul-50"
             >
               <Calculator size={16} aria-hidden /> Calculadora
             </button>
@@ -181,7 +181,7 @@ export function TomarEvaluacionClient({ intentoId }: { intentoId: string }) {
             <button
               type="button"
               onClick={() => setMostrarFormulas((v) => !v)}
-              className="flex items-center gap-1.5 rounded-lg border border-borde px-3 py-1.5 text-xs font-medium text-texto-secundario hover:bg-violeta-50"
+              className="flex items-center gap-1.5 rounded-lg border border-borde px-3 py-1.5 text-xs font-medium text-texto-secundario hover:bg-azul-50"
             >
               <ScrollText size={16} aria-hidden /> Hoja de fórmulas
             </button>
@@ -190,7 +190,7 @@ export function TomarEvaluacionClient({ intentoId }: { intentoId: string }) {
             role="timer"
             aria-live="polite"
             className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-bold ${
-              tiempoBajo ? "bg-error-50 text-error" : "bg-violeta-100 text-violeta-800"
+              tiempoBajo ? "bg-error-50 text-error" : "bg-azul-100 text-azul-800"
             }`}
           >
             <Clock size={16} aria-hidden />
@@ -204,10 +204,10 @@ export function TomarEvaluacionClient({ intentoId }: { intentoId: string }) {
         aria-valuenow={conteo.respondidas}
         aria-valuemin={0}
         aria-valuemax={preguntas.length}
-        className="h-2 w-full overflow-hidden rounded-full bg-violeta-100"
+        className="h-2 w-full overflow-hidden rounded-full bg-azul-100"
       >
         <div
-          className="h-full bg-violeta-600 transition-all"
+          className="h-full bg-azul-600 transition-all"
           style={{ width: `${(conteo.respondidas / preguntas.length) * 100}%` }}
         />
       </div>
@@ -243,7 +243,7 @@ export function TomarEvaluacionClient({ intentoId }: { intentoId: string }) {
                 <label
                   key={opcion.letra}
                   className={`flex cursor-pointer items-start gap-3 rounded-xl border-2 p-3.5 transition-colors ${
-                    seleccionada ? "border-violeta-600 bg-violeta-100" : "border-borde hover:border-violeta-600/50"
+                    seleccionada ? "border-azul-600 bg-azul-100" : "border-borde hover:border-azul-600/50"
                   }`}
                 >
                   <input
@@ -254,11 +254,11 @@ export function TomarEvaluacionClient({ intentoId }: { intentoId: string }) {
                     className="mt-1"
                   />
                   <span className="flex-1">
-                    <span className="font-semibold text-violeta-800">{opcion.letra})</span>{" "}
+                    <span className="font-semibold text-azul-800">{opcion.letra})</span>{" "}
                     <TextoConFormulas texto={opcion.texto} />
                   </span>
                   {seleccionada && (
-                    <span className="flex items-center gap-1 text-xs font-semibold text-violeta-700">
+                    <span className="flex items-center gap-1 text-xs font-semibold text-azul-700">
                       <Check size={16} aria-hidden /> Elegida
                     </span>
                   )}
@@ -277,8 +277,8 @@ export function TomarEvaluacionClient({ intentoId }: { intentoId: string }) {
             aria-pressed={respuestaActual?.marcada_para_revisar ?? false}
             className={`mt-4 flex items-center gap-2 rounded-lg border px-3.5 py-2 text-sm font-medium ${
               respuestaActual?.marcada_para_revisar
-                ? "border-amarillo-600 bg-amarillo-500 text-violeta-800"
-                : "border-borde text-texto-secundario hover:bg-amarillo-100"
+                ? "border-rojo-600 bg-rojo-500 text-white"
+                : "border-borde text-texto-secundario hover:bg-rojo-100"
             }`}
           >
             <Flag size={16} aria-hidden />
@@ -303,27 +303,27 @@ export function TomarEvaluacionClient({ intentoId }: { intentoId: string }) {
                   aria-current={i === indice}
                   className={`relative flex items-center justify-center gap-0.5 rounded-md border py-1.5 text-xs font-semibold ${
                     i === indice
-                      ? "border-violeta-600 ring-2 ring-violeta-600"
+                      ? "border-azul-600 ring-2 ring-azul-600"
                       : marcada
-                        ? "border-amarillo-600 bg-amarillo-100 text-violeta-800"
+                        ? "border-rojo-600 bg-rojo-100 text-azul-800"
                         : respondida
-                          ? "border-violeta-600 bg-violeta-100 text-violeta-700"
+                          ? "border-azul-600 bg-azul-100 text-azul-700"
                           : "border-borde text-texto-secundario"
                   }`}
                 >
                   {i + 1}
                   {respondida && <Check size={12} aria-hidden />}
-                  {marcada && <Flag size={10} aria-hidden className="absolute -right-1 -top-1 text-violeta-800" />}
+                  {marcada && <Flag size={10} aria-hidden className="absolute -right-1 -top-1 text-rojo-600" />}
                 </button>
               );
             })}
           </div>
           <ul className="mt-3 flex flex-col gap-1 text-xs text-texto-secundario">
             <li className="flex items-center gap-1.5">
-              <Check size={12} aria-hidden className="text-violeta-700" /> Violeta: respondida
+              <Check size={12} aria-hidden className="text-azul-700" /> Azul: respondida
             </li>
             <li className="flex items-center gap-1.5">
-              <Flag size={12} aria-hidden className="text-violeta-800" /> Amarillo: marcada para revisar
+              <Flag size={12} aria-hidden className="text-rojo-600" /> Rojo: marcada para revisar
             </li>
             <li>Sin marca: sin responder</li>
           </ul>
@@ -355,16 +355,16 @@ export function TomarEvaluacionClient({ intentoId }: { intentoId: string }) {
       {mostrarConfirmacion && (
         <div className="fixed inset-0 z-30 flex items-center justify-center bg-black/40 p-4">
           <div role="dialog" aria-modal="true" aria-labelledby="titulo-confirmacion" className="w-full max-w-md rounded-2xl bg-blanco p-6">
-            <h2 id="titulo-confirmacion" className="text-lg font-bold text-violeta-800">
+            <h2 id="titulo-confirmacion" className="text-lg font-bold text-azul-800">
               ¿Entregar la evaluación?
             </h2>
             <ul className="mt-4 flex flex-col gap-1.5 text-sm text-texto">
               <li className="flex items-center gap-1.5">
-                <Check size={16} aria-hidden className="text-violeta-700" /> Respondidas: {conteo.respondidas}
+                <Check size={16} aria-hidden className="text-azul-700" /> Respondidas: {conteo.respondidas}
               </li>
               <li>Sin responder: {conteo.sinResponder}</li>
               <li className="flex items-center gap-1.5">
-                <Flag size={16} aria-hidden className="text-violeta-800" /> Marcadas para revisar: {conteo.marcadas}
+                <Flag size={16} aria-hidden className="text-azul-800" /> Marcadas para revisar: {conteo.marcadas}
               </li>
             </ul>
             <p className="mt-3 text-sm text-texto-secundario">Una vez entregada, no vas a poder modificar tus respuestas.</p>

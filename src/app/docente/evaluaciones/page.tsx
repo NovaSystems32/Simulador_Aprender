@@ -29,10 +29,10 @@ export default async function PaginaEvaluaciones() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-violeta-800">Evaluaciones</h1>
+        <h1 className="text-2xl font-bold text-azul-800">Evaluaciones</h1>
         <Link
           href="/docente/evaluaciones/nueva"
-          className="rounded-lg bg-violeta-600 px-4 py-2 text-sm font-semibold text-white hover:bg-violeta-800"
+          className="rounded-lg bg-azul-600 px-4 py-2 text-sm font-semibold text-white hover:bg-azul-800"
         >
           Nueva evaluación
         </Link>
@@ -54,10 +54,10 @@ export default async function PaginaEvaluaciones() {
             <Link
               key={evaluacion.id}
               href={`/docente/evaluaciones/${evaluacion.id}`}
-              className="rounded-xl border border-slate-200 bg-white p-5 hover:border-violeta-600 hover:shadow-sm"
+              className="rounded-xl border border-slate-200 bg-white p-5 hover:border-azul-600 hover:shadow-sm"
             >
               <div className="flex items-start justify-between gap-2">
-                <h2 className="font-semibold text-violeta-800">{evaluacion.nombre}</h2>
+                <h2 className="font-semibold text-azul-800">{evaluacion.nombre}</h2>
                 <span className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ${ESTILO_ESTADO[evaluacion.estado]}`}>
                   {ETIQUETA_ESTADO[evaluacion.estado]}
                 </span>

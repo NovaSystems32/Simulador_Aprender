@@ -41,7 +41,7 @@ export function BotonComenzar({ evaluacionId }: { evaluacionId: string }) {
         type="button"
         onClick={comenzar}
         disabled={cargando}
-        className="self-start rounded-lg bg-violeta-600 px-6 py-3 text-base font-semibold text-white hover:bg-violeta-800 disabled:opacity-60"
+        className="self-start rounded-lg bg-azul-600 px-6 py-3 text-base font-semibold text-white hover:bg-azul-800 disabled:opacity-60"
       >
         {cargando ? "Preparando evaluación..." : "Comenzar evaluación"}
       </button>

@@ -11,7 +11,7 @@ export default async function LayoutEstudiante({ children }: { children: React.R
   const perfil = await exigirPerfil(["estudiante"]);
 
   return (
-    <EstudianteChrome enlaces={ENLACES} perfil={perfil} marcaAgua="Arte Nuevo — Simulador educativo independiente">
+    <EstudianteChrome enlaces={ENLACES} perfil={perfil} marcaAgua="Instituto Santiago Ramón y Cajal — Simulador educativo independiente">
       {children}
     </EstudianteChrome>
   );

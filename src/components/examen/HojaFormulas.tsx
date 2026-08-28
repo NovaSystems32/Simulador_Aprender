@@ -22,7 +22,7 @@ export function HojaFormulas({ onCerrar }: { onCerrar: () => void }) {
     <div className="w-80 max-h-[70vh] overflow-y-auto rounded-xl border border-borde bg-blanco p-4 shadow-lg">
       <div className="mb-2 flex items-center justify-between">
         <p className="text-xs font-semibold text-texto-secundario">Hoja de fórmulas</p>
-        <button type="button" onClick={onCerrar} aria-label="Cerrar hoja de fórmulas" className="text-texto-secundario hover:text-violeta-700">
+        <button type="button" onClick={onCerrar} aria-label="Cerrar hoja de fórmulas" className="text-texto-secundario hover:text-azul-700">
           ✕
         </button>
       </div>

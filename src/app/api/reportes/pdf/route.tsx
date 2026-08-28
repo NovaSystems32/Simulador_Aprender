@@ -5,22 +5,25 @@ import { crearClienteServidor } from "@/lib/supabase/server";
 
 export const runtime = "nodejs";
 
-const LOGO_PATH = path.join(process.cwd(), "public", "images", "logo-arte-nuevo.png");
+const LOGO_PATH = path.join(process.cwd(), "public", "images", "logo-cajal.png");
 
+// Mismos tokens institucionales que src/app/globals.css (react-pdf no puede leer CSS,
+// así que se repiten acá en formato hex literal).
 const estilos = StyleSheet.create({
   pagina: { padding: 32, fontSize: 10, fontFamily: "Helvetica" },
-  encabezado: { flexDirection: "row", alignItems: "center", gap: 10, marginBottom: 16 },
+  encabezado: { flexDirection: "row", alignItems: "center", gap: 10, marginBottom: 12 },
   logo: { width: 40, height: 40 },
-  titulo: { fontSize: 16, fontWeight: 700, color: "#4b2960" },
-  subtitulo: { fontSize: 10, color: "#696571" },
-  filaResumen: { flexDirection: "row", justifyContent: "space-between", marginBottom: 16, borderBottom: 1, borderColor: "#e7e2ea", paddingBottom: 12 },
+  franjaInstitucional: { height: 4, backgroundColor: "#ab2c2b", marginBottom: 16 },
+  titulo: { fontSize: 16, fontWeight: 700, color: "#174277" },
+  subtitulo: { fontSize: 10, color: "#667085" },
+  filaResumen: { flexDirection: "row", justifyContent: "space-between", marginBottom: 16, borderBottom: 1, borderColor: "#dce3ec", paddingBottom: 12 },
   bloqueResumen: { width: "16%" },
-  etiquetaResumen: { fontSize: 8, color: "#696571" },
-  valorResumen: { fontSize: 13, fontWeight: 700, color: "#292631" },
-  filaTabla: { flexDirection: "row", borderBottom: 1, borderColor: "#f3ebf8", paddingVertical: 4 },
-  encabezadoTabla: { flexDirection: "row", borderBottom: 1, borderColor: "#9661b9", paddingVertical: 4, fontWeight: 700, backgroundColor: "#f3ebf8", color: "#4b2960" },
+  etiquetaResumen: { fontSize: 8, color: "#667085" },
+  valorResumen: { fontSize: 13, fontWeight: 700, color: "#1f2937" },
+  filaTabla: { flexDirection: "row", borderBottom: 1, borderColor: "#e7eff8", paddingVertical: 4 },
+  encabezadoTabla: { flexDirection: "row", borderBottom: 1, borderColor: "#2871cd", paddingVertical: 4, fontWeight: 700, backgroundColor: "#e7eff8", color: "#174277" },
   celda: { flex: 1 },
-  pie: { position: "absolute", bottom: 24, left: 32, right: 32, fontSize: 8, color: "#696571", textAlign: "center" },
+  pie: { position: "absolute", bottom: 24, left: 32, right: 32, fontSize: 8, color: "#667085", textAlign: "center" },
 });
 
 export async function GET(request: Request) {
@@ -67,10 +70,13 @@ export async function GET(request: Request) {
           {/* eslint-disable-next-line jsx-a11y/alt-text -- Image de @react-pdf/renderer, no es un <img> HTML y no soporta alt */}
           <Image src={LOGO_PATH} style={estilos.logo} />
           <View>
-            <Text style={estilos.titulo}>Informe de resultados — Simulador de Matemática</Text>
-            <Text style={estilos.subtitulo}>Arte Nuevo · Generado el {new Date().toLocaleString("es-AR")}</Text>
+            <Text style={estilos.titulo}>Informe de resultados — Simulador Aprender Matemática</Text>
+            <Text style={estilos.subtitulo}>
+              Instituto Santiago Ramón y Cajal · Generado el {new Date().toLocaleString("es-AR")}
+            </Text>
           </View>
         </View>
+        <View style={estilos.franjaInstitucional} />
 
         <View style={estilos.filaResumen}>
           <View style={estilos.bloqueResumen}>
@@ -107,7 +113,8 @@ export async function GET(request: Request) {
         ))}
 
         <Text style={estilos.pie}>
-          Arte Nuevo — Simulador educativo independiente. No pertenece ni representa a organismos gubernamentales.
+          Instituto Santiago Ramón y Cajal — Simulador educativo independiente. No pertenece ni
+          representa a organismos gubernamentales.
         </Text>
       </Page>
     </Document>

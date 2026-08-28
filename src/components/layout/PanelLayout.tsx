@@ -102,8 +102,8 @@ export function PanelLayout({
             title={colapsado ? enlace.label : undefined}
             className={`flex items-center gap-3 rounded-lg border-l-4 px-3 py-2.5 text-sm font-medium transition-colors ${
               activo
-                ? "border-amarillo-500 bg-violeta-100 text-violeta-700"
-                : "border-transparent text-texto-secundario hover:bg-violeta-50 hover:text-violeta-700"
+                ? "border-rojo-500 bg-azul-100 text-azul-700"
+                : "border-transparent text-texto-secundario hover:bg-azul-50 hover:text-azul-700"
             }`}
           >
             <Icono size={20} aria-hidden className="shrink-0" />
@@ -125,10 +125,10 @@ export function PanelLayout({
         <div className={`flex items-center gap-2 px-4 py-4 ${colapsado ? "justify-center" : ""}`}>
           <Logo tamano="sm" />
           {!colapsado && (
-            <span className="text-sm font-bold leading-tight text-violeta-800">
-              Simulador de
+            <span className="text-sm font-bold leading-tight text-azul-800">
+              Instituto Santiago
               <br />
-              Matemática
+              Ramón y Cajal
             </span>
           )}
         </div>
@@ -137,7 +137,7 @@ export function PanelLayout({
           type="button"
           onClick={alternarColapso}
           aria-label={colapsado ? "Expandir menú" : "Contraer menú"}
-          className="m-3 flex items-center justify-center gap-2 rounded-lg border border-borde py-2 text-xs font-medium text-texto-secundario hover:bg-violeta-50"
+          className="m-3 flex items-center justify-center gap-2 rounded-lg border border-borde py-2 text-xs font-medium text-texto-secundario hover:bg-azul-50"
         >
           {colapsado ? <ChevronsRight size={16} aria-hidden /> : <ChevronsLeft size={16} aria-hidden />}
           {!colapsado && "Contraer"}
@@ -157,13 +157,13 @@ export function PanelLayout({
             <div className="flex items-center justify-between px-4 py-4">
               <div className="flex items-center gap-2">
                 <Logo tamano="sm" />
-                <span className="text-sm font-bold text-violeta-800">Simulador de Matemática</span>
+                <span className="text-sm font-bold text-azul-800">Instituto Santiago Ramón y Cajal</span>
               </div>
               <button
                 type="button"
                 onClick={() => setDrawerAbierto(false)}
                 aria-label="Cerrar menú"
-                className="rounded-md p-1 text-texto-secundario hover:bg-violeta-50"
+                className="rounded-md p-1 text-texto-secundario hover:bg-azul-50"
               >
                 <X size={20} aria-hidden />
               </button>
@@ -180,11 +180,11 @@ export function PanelLayout({
               type="button"
               onClick={() => setDrawerAbierto(true)}
               aria-label="Abrir menú"
-              className="rounded-md p-1.5 text-texto-secundario hover:bg-violeta-50 md:hidden"
+              className="rounded-md p-1.5 text-texto-secundario hover:bg-azul-50 md:hidden"
             >
               <Menu size={22} aria-hidden />
             </button>
-            <h1 className="text-base font-bold text-violeta-800 sm:text-lg">{tituloSeccion}</h1>
+            <h1 className="text-base font-bold text-azul-800 sm:text-lg">{tituloSeccion}</h1>
           </div>
 
           <div className="flex items-center gap-2 sm:gap-4">
@@ -199,7 +199,7 @@ export function PanelLayout({
               <button
                 type="submit"
                 aria-label="Cerrar sesión"
-                className="flex items-center gap-1.5 rounded-lg border border-borde px-2.5 py-1.5 text-sm font-medium text-texto-secundario hover:bg-violeta-50 hover:text-violeta-700"
+                className="flex items-center gap-1.5 rounded-lg border border-borde px-2.5 py-1.5 text-sm font-medium text-texto-secundario hover:bg-azul-50 hover:text-azul-700"
               >
                 <LogOut size={16} aria-hidden />
                 <span className="hidden sm:inline">Cerrar sesión</span>

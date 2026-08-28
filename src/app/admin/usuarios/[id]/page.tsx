@@ -39,7 +39,7 @@ export default async function PaginaVerUsuario({ params }: { params: Promise<{ i
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-violeta-800">
+        <h1 className="text-2xl font-bold text-azul-800">
           {perfil.nombre} {perfil.apellido}
         </h1>
         <div className="flex gap-3">
@@ -63,7 +63,7 @@ export default async function PaginaVerUsuario({ params }: { params: Promise<{ i
         </div>
         <div>
           <p className="text-xs text-texto-secundario">Estado</p>
-          <span className={`inline-block rounded-full px-2.5 py-1 text-xs font-medium ${perfil.activo ? "bg-exito-50 text-exito" : "bg-violeta-100 text-texto-secundario"}`}>
+          <span className={`inline-block rounded-full px-2.5 py-1 text-xs font-medium ${perfil.activo ? "bg-exito-50 text-exito" : "bg-azul-100 text-texto-secundario"}`}>
             {perfil.activo ? "Activo" : "Inactivo"}
           </span>
         </div>
@@ -74,7 +74,7 @@ export default async function PaginaVerUsuario({ params }: { params: Promise<{ i
       </div>
 
       <div className="tarjeta">
-        <h2 className="text-lg font-bold text-violeta-800">Cursos</h2>
+        <h2 className="text-lg font-bold text-azul-800">Cursos</h2>
         {cursos && cursos.length > 0 ? (
           <ul className="mt-3 flex flex-col gap-2">
             {cursos.map((c, i) => (
@@ -94,7 +94,7 @@ export default async function PaginaVerUsuario({ params }: { params: Promise<{ i
 
       {perfil.rol === "estudiante" && (
         <div className="tarjeta">
-          <h2 className="text-lg font-bold text-violeta-800">Historial de intentos</h2>
+          <h2 className="text-lg font-bold text-azul-800">Historial de intentos</h2>
           {intentos && intentos.length > 0 ? (
             <div className="mt-3 overflow-x-auto">
               <table className="w-full min-w-[560px] text-left text-sm">

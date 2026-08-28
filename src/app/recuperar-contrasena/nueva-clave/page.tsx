@@ -18,7 +18,7 @@ export default async function PaginaNuevaClave() {
       <div className="w-full max-w-sm rounded-2xl border border-borde bg-blanco p-8 shadow-sm">
         <div className="flex flex-col items-center text-center">
           <Logo tamano="md" />
-          <h1 className="mt-4 text-xl font-bold text-violeta-800">Elegí tu nueva contraseña</h1>
+          <h1 className="mt-4 text-xl font-bold text-azul-800">Elegí tu nueva contraseña</h1>
         </div>
         <div className="mt-6">
           <FormularioNuevaClave />

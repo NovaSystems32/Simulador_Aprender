@@ -11,13 +11,13 @@ export default async function PaginaUsuarios() {
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-bold text-violeta-800">Usuarios</h1>
+      <h1 className="text-2xl font-bold text-azul-800">Usuarios</h1>
 
       <FormularioNuevoUsuario />
 
       <div className="hidden overflow-x-auto rounded-xl border border-borde bg-blanco sm:block">
         <table className="w-full min-w-[700px] text-left text-sm">
-          <thead className="border-b border-borde bg-violeta-50 text-xs uppercase text-texto-secundario">
+          <thead className="border-b border-borde bg-azul-50 text-xs uppercase text-texto-secundario">
             <tr>
               <th className="px-4 py-3">Nombre</th>
               <th className="px-4 py-3">Correo</th>

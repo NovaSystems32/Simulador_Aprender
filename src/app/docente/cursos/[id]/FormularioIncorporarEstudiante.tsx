@@ -10,19 +10,19 @@ export function FormularioIncorporarEstudiante({ cursoId }: { cursoId: string })
 
   return (
     <div className="rounded-xl border border-slate-200 bg-white p-5">
-      <h2 className="mb-3 font-semibold text-violeta-800">Incorporar estudiante</h2>
+      <h2 className="mb-3 font-semibold text-azul-800">Incorporar estudiante</h2>
       <div className="mb-4 flex gap-2 text-sm">
         <button
           type="button"
           onClick={() => setModo("nuevo")}
-          className={`rounded-md px-3 py-1.5 ${modo === "nuevo" ? "bg-violeta-600 text-white" : "bg-slate-100 text-slate-600"}`}
+          className={`rounded-md px-3 py-1.5 ${modo === "nuevo" ? "bg-azul-600 text-white" : "bg-slate-100 text-slate-600"}`}
         >
           Crear cuenta nueva
         </button>
         <button
           type="button"
           onClick={() => setModo("existente")}
-          className={`rounded-md px-3 py-1.5 ${modo === "existente" ? "bg-violeta-600 text-white" : "bg-slate-100 text-slate-600"}`}
+          className={`rounded-md px-3 py-1.5 ${modo === "existente" ? "bg-azul-600 text-white" : "bg-slate-100 text-slate-600"}`}
         >
           Agregar estudiante existente
         </button>
@@ -48,7 +48,7 @@ function FormularioNuevo({ cursoId }: { cursoId: string }) {
       <button
         type="submit"
         disabled={enviando}
-        className="self-start rounded-lg bg-violeta-600 px-4 py-2 text-sm font-semibold text-white hover:bg-violeta-800 disabled:opacity-60"
+        className="self-start rounded-lg bg-azul-600 px-4 py-2 text-sm font-semibold text-white hover:bg-azul-800 disabled:opacity-60"
       >
         {enviando ? "Creando..." : "Crear e incorporar"}
       </button>
@@ -83,7 +83,7 @@ function FormularioExistente({ cursoId }: { cursoId: string }) {
           type="button"
           disabled={!email || enviando}
           onClick={enviar}
-          className="rounded-lg bg-violeta-600 px-4 py-2 text-sm font-semibold text-white hover:bg-violeta-800 disabled:opacity-60"
+          className="rounded-lg bg-azul-600 px-4 py-2 text-sm font-semibold text-white hover:bg-azul-800 disabled:opacity-60"
         >
           {enviando ? "Agregando..." : "Agregar al curso"}
         </button>

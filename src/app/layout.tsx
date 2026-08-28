@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Nunito_Sans, Geist_Mono } from "next/font/google";
+import { NOMBRE_APP } from "@/lib/marca";
 import "./globals.css";
 
 const nunitoSans = Nunito_Sans({
@@ -12,16 +13,13 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const NOMBRE_APP = "Simulador de Matemática";
-export const SUBTITULO_APP = "Práctica para las Pruebas Aprender – 6.º año";
-
 export const metadata: Metadata = {
   title: {
     default: NOMBRE_APP,
     template: `%s — ${NOMBRE_APP}`,
   },
   description:
-    "Simulador educativo independiente de evaluaciones de Matemática, estilo Pruebas Aprender, para estudiantes de 6.º año. Arte Nuevo.",
+    "Simulador educativo independiente de evaluaciones de Matemática, estilo Pruebas Aprender, para estudiantes de 6.º año. Instituto Santiago Ramón y Cajal.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

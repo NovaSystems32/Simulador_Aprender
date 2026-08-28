@@ -13,7 +13,7 @@ export default function PaginaRecuperarContrasena() {
       <div className="w-full max-w-sm rounded-2xl border border-borde bg-blanco p-8 shadow-sm">
         <div className="flex flex-col items-center text-center">
           <Logo tamano="md" />
-          <h1 className="mt-4 text-xl font-bold text-violeta-800">Recuperar contraseña</h1>
+          <h1 className="mt-4 text-xl font-bold text-azul-800">Recuperar contraseña</h1>
           <p className="mt-1 text-sm text-texto-secundario">
             Ingresá tu correo y te enviamos un enlace para elegir una nueva contraseña.
           </p>
@@ -24,7 +24,7 @@ export default function PaginaRecuperarContrasena() {
         </div>
 
         <p className="mt-6 text-center text-sm text-texto-secundario">
-          <Link href="/login" className="text-violeta-600 hover:underline">
+          <Link href="/login" className="text-azul-600 hover:underline">
             Volver a iniciar sesión
           </Link>
         </p>

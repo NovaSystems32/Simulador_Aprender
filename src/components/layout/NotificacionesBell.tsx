@@ -51,13 +51,13 @@ export function NotificacionesBell() {
         onClick={alAbrir}
         aria-label={hayNuevas ? "Notificaciones, hay novedades" : "Notificaciones"}
         aria-expanded={abierto}
-        className="relative rounded-full p-2 text-texto-secundario hover:bg-violeta-50 hover:text-violeta-700"
+        className="relative rounded-full p-2 text-texto-secundario hover:bg-azul-50 hover:text-azul-700"
       >
         <Bell size={20} aria-hidden />
         {hayNuevas && (
           <span
             aria-hidden
-            className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-amarillo-600 ring-2 ring-white"
+            className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-rojo-600 ring-2 ring-white"
           />
         )}
       </button>
@@ -76,7 +76,7 @@ export function NotificacionesBell() {
                   <Link
                     href={n.href}
                     onClick={() => setAbierto(false)}
-                    className="block rounded-lg px-2 py-2 text-sm hover:bg-violeta-50"
+                    className="block rounded-lg px-2 py-2 text-sm hover:bg-azul-50"
                   >
                     <p className="font-medium text-texto">{n.titulo}</p>
                     <p className="text-xs text-texto-secundario">{n.descripcion}</p>

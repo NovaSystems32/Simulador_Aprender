@@ -23,7 +23,7 @@ export default async function PaginaInstruccionesEvaluacion({
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-6">
       <div>
-        <h1 className="text-2xl font-bold text-violeta-800">{evaluacion.nombre}</h1>
+        <h1 className="text-2xl font-bold text-azul-800">{evaluacion.nombre}</h1>
         {evaluacion.descripcion && <p className="mt-2 text-slate-600">{evaluacion.descripcion}</p>}
       </div>
 
@@ -46,7 +46,7 @@ export default async function PaginaInstruccionesEvaluacion({
         </div>
       </dl>
 
-      <div className="rounded-xl border border-amarillo-500 bg-violeta-100 p-5 text-sm text-violeta-800">
+      <div className="rounded-xl border border-rojo-500 bg-azul-100 p-5 text-sm text-azul-800">
         <p className="font-semibold">Instrucciones</p>
         <ul className="mt-2 list-disc space-y-1 pl-5">
           <li>Vas a ver una pregunta por pantalla, con cuatro opciones de respuesta.</li>

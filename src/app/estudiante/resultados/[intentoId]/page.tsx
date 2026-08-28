@@ -48,7 +48,7 @@ export default async function PaginaResultados({
   if (!evaluacion?.mostrar_resultado_inmediato) {
     return (
       <div className="tarjeta mx-auto max-w-lg text-center">
-        <h1 className="text-xl font-bold text-violeta-800">Evaluación entregada</h1>
+        <h1 className="text-xl font-bold text-azul-800">Evaluación entregada</h1>
         <p className="mt-2 text-texto-secundario">
           Tu evaluación se entregó correctamente. El/la docente todavía no habilitó la visualización de resultados
           para esta evaluación.
@@ -66,7 +66,7 @@ export default async function PaginaResultados({
       <div className="hidden items-center gap-3 border-b border-borde pb-4 print:flex">
         <Logo tamano="md" />
         <div>
-          <p className="font-bold text-violeta-800">Simulador de Matemática — Arte Nuevo</p>
+          <p className="font-bold text-azul-800">Simulador Aprender Matemática — Instituto Santiago Ramón y Cajal</p>
           <p className="text-sm text-texto-secundario">
             {perfil.nombre} {perfil.apellido} · {new Date().toLocaleDateString("es-AR")}
           </p>
@@ -75,7 +75,7 @@ export default async function PaginaResultados({
 
       <div className="flex items-start justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-violeta-800">{evaluacion.nombre}</h1>
+          <h1 className="text-2xl font-bold text-azul-800">{evaluacion.nombre}</h1>
           <p className="text-texto-secundario">Resultado del intento #{it.numero_intento}</p>
         </div>
         <BotonImprimir />
@@ -86,7 +86,7 @@ export default async function PaginaResultados({
           it.aprobado ? "border-exito bg-exito-50" : "border-advertencia bg-advertencia-50"
         }`}
       >
-        <p className="text-4xl font-extrabold text-violeta-800">{it.porcentaje_obtenido}%</p>
+        <p className="text-4xl font-extrabold text-azul-800">{it.porcentaje_obtenido}%</p>
         <p className={`mt-1 font-semibold ${it.aprobado ? "text-exito" : "text-advertencia"}`}>
           {it.aprobado ? "Evaluación aprobada" : "Evaluación no aprobada"}
         </p>
@@ -100,7 +100,7 @@ export default async function PaginaResultados({
       </div>
 
       <div className="tarjeta imprimible">
-        <h2 className="mb-3 font-semibold text-violeta-800">Rendimiento por eje matemático</h2>
+        <h2 className="mb-3 font-semibold text-azul-800">Rendimiento por eje matemático</h2>
         <GraficoDesempeno
           datos={porTipo("eje").map((d) => ({ etiqueta: etiquetaDeClave("eje", d.clave), porcentaje: d.porcentaje }))}
         />
@@ -138,7 +138,7 @@ function SeccionDesglose({
   if (filas.length === 0) return null;
   return (
     <div className="tarjeta imprimible">
-      <h2 className="mb-3 font-semibold text-violeta-800">{titulo}</h2>
+      <h2 className="mb-3 font-semibold text-azul-800">{titulo}</h2>
       <ul className="flex flex-col gap-3">
         {filas.map((f) => (
           <li key={f.clave}>
@@ -148,10 +148,10 @@ function SeccionDesglose({
                 {f.correctas}/{f.total} · {f.porcentaje}%
               </span>
             </div>
-            <div className="mt-1 h-2 w-full overflow-hidden rounded-full bg-violeta-100">
-              <div className="h-full bg-violeta-600" style={{ width: `${f.porcentaje}%` }} />
+            <div className="mt-1 h-2 w-full overflow-hidden rounded-full bg-azul-100">
+              <div className="h-full bg-azul-600" style={{ width: `${f.porcentaje}%` }} />
             </div>
-            <p className="mt-1 text-xs font-medium text-violeta-600">{mensajeDesempeno(f.porcentaje)}</p>
+            <p className="mt-1 text-xs font-medium text-azul-600">{mensajeDesempeno(f.porcentaje)}</p>
           </li>
         ))}
       </ul>

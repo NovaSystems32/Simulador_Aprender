@@ -11,7 +11,9 @@ export function GraficoDesempeno({ datos }: { datos: { etiqueta: string; porcent
           <XAxis dataKey="etiqueta" angle={-25} textAnchor="end" interval={0} height={70} tick={{ fontSize: 12 }} />
           <YAxis domain={[0, 100]} tickFormatter={(v) => `${v}%`} />
           <Tooltip formatter={(v) => [`${v}%`, "Porcentaje logrado"]} />
-          <Bar dataKey="porcentaje" fill="#1c56ad" radius={[4, 4, 0, 0]} />
+          {/* Azul institucional (--color-azul-600 en globals.css); recharts no puede leer
+              variables CSS en `fill`, así que se repite el valor acá. */}
+          <Bar dataKey="porcentaje" fill="#2871cd" radius={[4, 4, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>

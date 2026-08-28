@@ -13,7 +13,7 @@ export default async function LayoutDocente({ children }: { children: React.Reac
   const perfil = await exigirPerfil(["docente", "admin"]);
 
   return (
-    <PanelLayout enlaces={ENLACES} perfil={perfil} marcaAgua="Arte Nuevo — Simulador educativo independiente">
+    <PanelLayout enlaces={ENLACES} perfil={perfil} marcaAgua="Instituto Santiago Ramón y Cajal — Simulador educativo independiente">
       {children}
     </PanelLayout>
   );

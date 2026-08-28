@@ -27,14 +27,14 @@ export default async function PaginaDetalleCurso({
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-2xl font-bold text-violeta-800">
+        <h1 className="text-2xl font-bold text-azul-800">
           {curso.nombre} &quot;{curso.division}&quot;
         </h1>
         <p className="text-slate-500">Ciclo lectivo {curso.anio_lectivo}</p>
       </div>
 
       <div className="rounded-xl border border-slate-200 bg-white p-5">
-        <h2 className="mb-3 font-semibold text-violeta-800">Estudiantes ({estudiantes.length})</h2>
+        <h2 className="mb-3 font-semibold text-azul-800">Estudiantes ({estudiantes.length})</h2>
         <ListaIntegrantes cursoId={id} estudiantes={estudiantes as unknown as IntegranteFila[]} />
       </div>
 

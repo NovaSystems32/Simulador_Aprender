@@ -101,7 +101,7 @@ export function ConfirmacionPeligrosa({
             {errorCarga && <p className="alerta-error mt-4">{errorCarga}</p>}
 
             {resumen && resumen.length > 0 && (
-              <dl className="mt-4 grid grid-cols-2 gap-3 rounded-lg bg-violeta-50 p-3 text-sm">
+              <dl className="mt-4 grid grid-cols-2 gap-3 rounded-lg bg-azul-50 p-3 text-sm">
                 {resumen.map((r) => (
                   <div key={r.etiqueta}>
                     <dt className="text-xs text-texto-secundario">{r.etiqueta}</dt>

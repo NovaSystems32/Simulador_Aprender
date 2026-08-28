@@ -27,7 +27,7 @@ export function SeccionLimpiarHistorialEstudiante({ estudiantes }: { estudiantes
 
   return (
     <div className="tarjeta">
-      <h2 className="text-lg font-bold text-violeta-800">Limpiar historial de un estudiante</h2>
+      <h2 className="text-lg font-bold text-azul-800">Limpiar historial de un estudiante</h2>
       <p className="mt-1 text-sm text-texto-secundario">
         Borra intentos, respuestas y resultados de un estudiante. Se conserva su cuenta, curso y evaluaciones asignadas.
       </p>
@@ -83,7 +83,7 @@ export function SeccionLimpiarHistorialEvaluacion({ evaluaciones }: { evaluacion
 
   return (
     <div className="tarjeta">
-      <h2 className="text-lg font-bold text-violeta-800">Limpiar historial de una evaluación</h2>
+      <h2 className="text-lg font-bold text-azul-800">Limpiar historial de una evaluación</h2>
       <p className="mt-1 text-sm text-texto-secundario">
         Borra todos los intentos, respuestas y resultados de una evaluación. Se conserva la evaluación, su configuración y sus preguntas.
       </p>
@@ -139,7 +139,7 @@ export function SeccionEliminarEvaluacion({ evaluaciones }: { evaluaciones: { id
 
   return (
     <div className="tarjeta">
-      <h2 className="text-lg font-bold text-violeta-800">Eliminar una evaluación</h2>
+      <h2 className="text-lg font-bold text-azul-800">Eliminar una evaluación</h2>
       <p className="mt-1 text-sm text-texto-secundario">
         Elimina definitivamente la evaluación junto con sus asignaciones, relaciones con preguntas, intentos, respuestas y resultados.
       </p>
@@ -195,7 +195,7 @@ export function SeccionLimpiezaGeneral() {
 
   return (
     <div className="tarjeta border-error/30">
-      <h2 className="text-lg font-bold text-violeta-800">Limpieza general de resultados</h2>
+      <h2 className="text-lg font-bold text-azul-800">Limpieza general de resultados</h2>
       <p className="mt-1 text-sm text-texto-secundario">
         Borra todos los intentos y resultados del sistema completo. No elimina usuarios, cursos, evaluaciones ni preguntas.
       </p>

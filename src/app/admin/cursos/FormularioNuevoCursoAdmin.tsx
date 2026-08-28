@@ -44,7 +44,7 @@ export function FormularioNuevoCursoAdmin({ docentes }: { docentes: { id: string
       <button
         type="submit"
         disabled={enviando}
-        className="rounded-lg bg-violeta-600 px-4 py-2 text-sm font-semibold text-white hover:bg-violeta-800 disabled:opacity-60"
+        className="rounded-lg bg-azul-600 px-4 py-2 text-sm font-semibold text-white hover:bg-azul-800 disabled:opacity-60"
       >
         {enviando ? "Creando..." : "Crear curso"}
       </button>

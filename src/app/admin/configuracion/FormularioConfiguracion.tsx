@@ -48,7 +48,7 @@ export function FormularioConfiguracion({
       <button
         type="submit"
         disabled={enviando}
-        className="self-start rounded-lg bg-violeta-600 px-5 py-2.5 font-semibold text-white hover:bg-violeta-800 disabled:opacity-60"
+        className="self-start rounded-lg bg-azul-600 px-5 py-2.5 font-semibold text-white hover:bg-azul-800 disabled:opacity-60"
       >
         {enviando ? "Guardando..." : "Guardar configuración"}
       </button>

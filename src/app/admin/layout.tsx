@@ -14,7 +14,7 @@ export default async function LayoutAdmin({ children }: { children: React.ReactN
   const perfil = await exigirPerfil(["admin"]);
 
   return (
-    <PanelLayout enlaces={ENLACES} perfil={perfil} marcaAgua="Arte Nuevo — Simulador educativo independiente">
+    <PanelLayout enlaces={ENLACES} perfil={perfil} marcaAgua="Instituto Santiago Ramón y Cajal — Simulador educativo independiente">
       {children}
     </PanelLayout>
   );

@@ -28,7 +28,7 @@ export default async function PaginaVerPregunta({ params }: { params: Promise<{ 
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-violeta-800">Pregunta {pregunta.codigo}</h1>
+        <h1 className="text-2xl font-bold text-azul-800">Pregunta {pregunta.codigo}</h1>
         <div className="flex gap-3">
           <Link href={`/admin/preguntas/${pregunta.id}/editar`} className="btn-neutro">
             Editar
@@ -41,13 +41,13 @@ export default async function PaginaVerPregunta({ params }: { params: Promise<{ 
 
       <div className="tarjeta flex flex-col gap-4">
         <div className="flex flex-wrap items-center gap-3">
-          <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${pregunta.estado === "activa" ? "bg-exito-50 text-exito" : pregunta.estado === "archivada" ? "bg-advertencia-50 text-advertencia" : "bg-violeta-100 text-violeta-700"}`}>
+          <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${pregunta.estado === "activa" ? "bg-exito-50 text-exito" : pregunta.estado === "archivada" ? "bg-advertencia-50 text-advertencia" : "bg-azul-100 text-azul-700"}`}>
             {ETIQUETA_ESTADO[pregunta.estado]}
           </span>
-          <span className="insignia-violeta">{ETIQUETA_EJE[pregunta.eje]}</span>
-          <span className="insignia-violeta">{pregunta.contenido}</span>
-          <span className="insignia-amarillo">{ETIQUETA_CAPACIDAD[pregunta.capacidad]}</span>
-          <span className="insignia-amarillo">{ETIQUETA_DIFICULTAD[pregunta.dificultad]}</span>
+          <span className="insignia-azul">{ETIQUETA_EJE[pregunta.eje]}</span>
+          <span className="insignia-azul">{pregunta.contenido}</span>
+          <span className="insignia-rojo">{ETIQUETA_CAPACIDAD[pregunta.capacidad]}</span>
+          <span className="insignia-rojo">{ETIQUETA_DIFICULTAD[pregunta.dificultad]}</span>
         </div>
 
         <p className="text-texto">{pregunta.enunciado}</p>

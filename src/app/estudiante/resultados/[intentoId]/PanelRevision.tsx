@@ -47,7 +47,7 @@ export function PanelRevision({ intentoId }: { intentoId: string }) {
       <button
         type="button"
         onClick={abierto ? () => setAbierto(false) : abrir}
-        className="font-semibold text-violeta-800 hover:underline"
+        className="font-semibold text-azul-800 hover:underline"
       >
         {abierto ? "Ocultar revisión de respuestas ▲" : "Revisar mis respuestas ▼"}
       </button>
@@ -102,7 +102,7 @@ export function PanelRevision({ intentoId }: { intentoId: string }) {
                   <p className="mt-2 text-xs text-advertencia">No respondiste esta pregunta.</p>
                 )}
                 {p.explicacion && (
-                  <p className="mt-2 rounded-md bg-violeta-100 p-3 text-sm text-violeta-800">
+                  <p className="mt-2 rounded-md bg-azul-100 p-3 text-sm text-azul-800">
                     <span className="font-semibold">Resolución: </span>
                     <TextoConFormulas texto={p.explicacion} />
                   </p>

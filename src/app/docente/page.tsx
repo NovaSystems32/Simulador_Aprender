@@ -24,7 +24,7 @@ export default async function PanelDocente() {
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-bold text-violeta-800">Hola, {perfil.nombre}</h1>
+      <h1 className="text-2xl font-bold text-azul-800">Hola, {perfil.nombre}</h1>
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
         <TarjetaEnlace href="/docente/cursos" etiqueta="Cursos" valor={String(cantidadCursos ?? 0)} />
@@ -34,8 +34,8 @@ export default async function PanelDocente() {
 
       <div className="rounded-xl border border-slate-200 bg-white p-5">
         <div className="mb-3 flex items-center justify-between">
-          <h2 className="font-semibold text-violeta-800">Últimos intentos entregados</h2>
-          <Link href="/docente/reportes" className="text-sm font-medium text-violeta-600 hover:underline">
+          <h2 className="font-semibold text-azul-800">Últimos intentos entregados</h2>
+          <Link href="/docente/reportes" className="text-sm font-medium text-azul-600 hover:underline">
             Ver reportes completos →
           </Link>
         </div>
@@ -50,7 +50,7 @@ export default async function PanelDocente() {
                   {(i.perfiles as unknown as { nombre: string; apellido: string } | null)?.apellido} —{" "}
                   <span className="text-slate-500">{(i.evaluaciones as unknown as { nombre: string } | null)?.nombre}</span>
                 </span>
-                <span className="font-semibold text-violeta-800">{i.porcentaje_obtenido}%</span>
+                <span className="font-semibold text-azul-800">{i.porcentaje_obtenido}%</span>
               </li>
             ))}
           </ul>
@@ -62,9 +62,9 @@ export default async function PanelDocente() {
 
 function TarjetaEnlace({ href, etiqueta, valor }: { href: string; etiqueta: string; valor: string }) {
   return (
-    <Link href={href} className="rounded-xl border border-slate-200 bg-white p-5 hover:border-violeta-600 hover:shadow-sm">
+    <Link href={href} className="rounded-xl border border-slate-200 bg-white p-5 hover:border-azul-600 hover:shadow-sm">
       <p className="text-xs text-slate-400">{etiqueta}</p>
-      <p className="mt-1 text-2xl font-bold text-violeta-800">{valor}</p>
+      <p className="mt-1 text-2xl font-bold text-azul-800">{valor}</p>
     </Link>
   );
 }

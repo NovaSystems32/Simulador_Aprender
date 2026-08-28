@@ -24,7 +24,7 @@ export default async function PaginaConfiguracion() {
 
   return (
     <div className="mx-auto flex max-w-lg flex-col gap-6">
-      <h1 className="text-2xl font-bold text-violeta-800">Configuración general</h1>
+      <h1 className="text-2xl font-bold text-azul-800">Configuración general</h1>
       <FormularioConfiguracion
         nombreInstitucion={institucion?.nombre ?? ""}
         puntajeAprobacionDefault={(configuracion?.valor as { valor?: number } | null)?.valor ?? 60}

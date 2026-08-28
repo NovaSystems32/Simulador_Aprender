@@ -21,7 +21,7 @@ export function PanelAsignaciones({
 
   return (
     <div className="rounded-xl border border-slate-200 bg-white p-5">
-      <h2 className="mb-3 font-semibold text-violeta-800">Cursos asignados</h2>
+      <h2 className="mb-3 font-semibold text-azul-800">Cursos asignados</h2>
 
       {asignados.length === 0 ? (
         <p className="text-sm text-slate-500">Esta evaluación todavía no está asignada a ningún curso.</p>
@@ -72,7 +72,7 @@ export function PanelAsignaciones({
               iniciarTransicion(() => asignarCurso(evaluacionId, cursoSeleccionado));
               setCursoSeleccionado("");
             }}
-            className="rounded-lg bg-violeta-600 px-4 py-2 text-sm font-medium text-white hover:bg-violeta-800 disabled:opacity-50"
+            className="rounded-lg bg-azul-600 px-4 py-2 text-sm font-medium text-white hover:bg-azul-800 disabled:opacity-50"
           >
             Asignar
           </button>

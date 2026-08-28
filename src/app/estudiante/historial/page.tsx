@@ -21,7 +21,7 @@ export default async function PaginaHistorial() {
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-bold text-violeta-800">Mi historial de intentos</h1>
+      <h1 className="text-2xl font-bold text-azul-800">Mi historial de intentos</h1>
 
       {!intentos || intentos.length === 0 ? (
         <p className="rounded-xl border border-dashed border-borde p-8 text-center text-texto-secundario">
@@ -31,7 +31,7 @@ export default async function PaginaHistorial() {
         <>
           <div className="hidden overflow-x-auto rounded-xl border border-borde bg-blanco sm:block">
             <table className="w-full min-w-[600px] text-left text-sm">
-              <thead className="border-b border-borde bg-violeta-50 text-xs uppercase text-texto-secundario">
+              <thead className="border-b border-borde bg-azul-50 text-xs uppercase text-texto-secundario">
                 <tr>
                   <th className="px-4 py-3">Evaluación</th>
                   <th className="px-4 py-3">Intento</th>
@@ -53,7 +53,7 @@ export default async function PaginaHistorial() {
                     </td>
                     <td className="px-4 py-3">
                       {intento.estado !== "en_curso" && (
-                        <Link href={`/estudiante/resultados/${intento.id}`} className="font-medium text-violeta-600 hover:underline">
+                        <Link href={`/estudiante/resultados/${intento.id}`} className="font-medium text-azul-600 hover:underline">
                           Ver resultado
                         </Link>
                       )}
@@ -87,7 +87,7 @@ export default async function PaginaHistorial() {
                 {intento.estado !== "en_curso" && (
                   <Link
                     href={`/estudiante/resultados/${intento.id}`}
-                    className="mt-3 inline-block text-sm font-medium text-violeta-600 hover:underline"
+                    className="mt-3 inline-block text-sm font-medium text-azul-600 hover:underline"
                   >
                     Ver resultado →
                   </Link>

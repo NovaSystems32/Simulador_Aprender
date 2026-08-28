@@ -14,7 +14,7 @@ export default async function PaginaNuevaEvaluacion() {
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-bold text-violeta-800">Nueva evaluación</h1>
+      <h1 className="text-2xl font-bold text-azul-800">Nueva evaluación</h1>
       <FormularioNuevaEvaluacion
         cursos={(cursos ?? []) as Curso[]}
         preguntas={(preguntas ?? []) as Pregunta[]}

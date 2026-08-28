@@ -22,7 +22,7 @@ export default async function PaginaGestionDatos() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-2xl font-bold text-violeta-800">Gestión de datos</h1>
+        <h1 className="text-2xl font-bold text-azul-800">Gestión de datos</h1>
         <p className="text-sm text-texto-secundario">
           Herramientas para limpiar historiales de evaluación y resultados. Todas las acciones quedan registradas en
           el registro de auditoría y requieren confirmación reforzada.

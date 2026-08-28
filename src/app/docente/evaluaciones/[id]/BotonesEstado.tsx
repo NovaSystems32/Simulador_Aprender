@@ -15,7 +15,7 @@ export function BotonesEstado({ evaluacionId, estadoActual }: { evaluacionId: st
 
   return (
     <div className="flex shrink-0 items-center gap-2">
-      <span className="rounded-full bg-violeta-100 px-3 py-1 text-xs font-medium text-violeta-800">
+      <span className="rounded-full bg-azul-100 px-3 py-1 text-xs font-medium text-azul-800">
         {ETIQUETA[estadoActual]}
       </span>
       {estadoActual !== "publicada" && (

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Logo } from "@/components/Logo";
+import { NOMBRE_APP, NOMBRE_INSTITUCION, SUBTITULO_APP } from "@/lib/marca";
 import { FormularioLogin } from "./FormularioLogin";
 
 export const metadata: Metadata = {
@@ -18,18 +19,22 @@ export default async function PaginaLogin({
     <main className="relative flex flex-1 items-center justify-center overflow-hidden bg-fondo px-4 py-12">
       <div
         aria-hidden
-        className="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-amarillo-100"
+        className="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-rojo-100"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute -bottom-32 -right-20 h-80 w-80 rounded-full bg-violeta-100"
+        className="pointer-events-none absolute -bottom-32 -right-20 h-80 w-80 rounded-full bg-azul-100"
       />
 
-      <div className="relative w-full max-w-sm rounded-2xl border border-borde bg-blanco p-8 shadow-sm">
+      <div className="relative w-full max-w-sm overflow-hidden rounded-2xl border border-borde bg-blanco p-8 shadow-sm">
+        <div aria-hidden className="absolute inset-x-0 top-0 h-1.5 bg-rojo-600" />
         <div className="flex flex-col items-center text-center">
           <Logo tamano="lg" />
-          <h1 className="mt-4 text-xl font-bold text-violeta-800">Simulador de Matemática</h1>
-          <p className="mt-1 text-sm text-texto-secundario">Práctica para las Pruebas Aprender – 6.º año</p>
+          <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-rojo-600">
+            {NOMBRE_INSTITUCION}
+          </p>
+          <h1 className="mt-1 text-xl font-bold text-azul-800">{NOMBRE_APP}</h1>
+          <p className="mt-1 text-sm text-texto-secundario">{SUBTITULO_APP}</p>
         </div>
 
         {recuperada && (
@@ -48,13 +53,13 @@ export default async function PaginaLogin({
         </div>
 
         <p className="mt-4 text-center text-sm">
-          <Link href="/recuperar-contrasena" className="text-violeta-600 hover:underline">
+          <Link href="/recuperar-contrasena" className="text-azul-600 hover:underline">
             ¿Olvidaste tu contraseña?
           </Link>
         </p>
 
         <p className="mt-6 text-center text-sm text-texto-secundario">
-          <Link href="/" className="text-violeta-600 hover:underline">
+          <Link href="/" className="text-azul-600 hover:underline">
             Volver al inicio
           </Link>
         </p>

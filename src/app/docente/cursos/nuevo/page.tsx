@@ -16,7 +16,7 @@ export default function PaginaNuevoCurso() {
 
   return (
     <div className="mx-auto flex max-w-md flex-col gap-6">
-      <h1 className="text-2xl font-bold text-violeta-800">Nuevo curso</h1>
+      <h1 className="text-2xl font-bold text-azul-800">Nuevo curso</h1>
       <form action={formAction} className="flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-6">
         <div className="flex flex-col gap-1">
           <label htmlFor="nombre" className="text-sm font-medium text-slate-700">
@@ -40,7 +40,7 @@ export default function PaginaNuevoCurso() {
         <button
           type="submit"
           disabled={enviando}
-          className="rounded-lg bg-violeta-600 px-4 py-2.5 font-semibold text-white hover:bg-violeta-800 disabled:opacity-60"
+          className="rounded-lg bg-azul-600 px-4 py-2.5 font-semibold text-white hover:bg-azul-800 disabled:opacity-60"
         >
           {enviando ? "Creando..." : "Crear curso"}
         </button>

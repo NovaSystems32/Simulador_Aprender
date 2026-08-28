@@ -16,7 +16,7 @@ const ETIQUETA_CAPACIDAD = Object.fromEntries(CAPACIDADES.map((c) => [c.value, c
 const ETIQUETA_DIFICULTAD = Object.fromEntries(DIFICULTADES.map((d) => [d.value, d.label]));
 
 const ESTILO_ESTADO: Record<string, string> = {
-  borrador: "bg-violeta-100 text-violeta-700",
+  borrador: "bg-azul-100 text-azul-700",
   activa: "bg-exito-50 text-exito",
   archivada: "bg-advertencia-50 text-advertencia",
 };
@@ -40,18 +40,18 @@ function Acciones({ pregunta, basePath, esAdmin, pendiente, iniciarTransicion }:
     <div className="flex flex-col gap-2">
       <div className="flex flex-wrap gap-3 text-xs">
         {esAdmin && (
-          <Link href={`${basePath}/${pregunta.id}`} className="font-medium text-violeta-600 hover:underline">
+          <Link href={`${basePath}/${pregunta.id}`} className="font-medium text-azul-600 hover:underline">
             Ver
           </Link>
         )}
-        <Link href={`${basePath}/${pregunta.id}/editar`} className="font-medium text-violeta-600 hover:underline">
+        <Link href={`${basePath}/${pregunta.id}/editar`} className="font-medium text-azul-600 hover:underline">
           Editar
         </Link>
         <button
           type="button"
           disabled={pendiente}
           onClick={() => iniciarTransicion(() => duplicarPregunta(pregunta.id))}
-          className="font-medium text-violeta-600 hover:underline disabled:opacity-50"
+          className="font-medium text-azul-600 hover:underline disabled:opacity-50"
         >
           Duplicar
         </button>
@@ -69,7 +69,7 @@ function Acciones({ pregunta, basePath, esAdmin, pendiente, iniciarTransicion }:
             type="button"
             disabled={pendiente}
             onClick={() => iniciarTransicion(() => cambiarEstadoPregunta(pregunta.id, "borrador"))}
-            className="font-medium text-violeta-600 hover:underline disabled:opacity-50"
+            className="font-medium text-azul-600 hover:underline disabled:opacity-50"
           >
             Restaurar
           </button>
@@ -129,7 +129,7 @@ export function TablaPreguntas({
       {/* Tabla: desde sm en adelante */}
       <div className="hidden overflow-x-auto rounded-xl border border-borde bg-blanco sm:block">
         <table className="w-full min-w-[840px] text-left text-sm">
-          <thead className="border-b border-borde bg-violeta-50 text-xs uppercase tracking-wide text-texto-secundario">
+          <thead className="border-b border-borde bg-azul-50 text-xs uppercase tracking-wide text-texto-secundario">
             <tr>
               <th scope="col" className="px-4 py-3">Código</th>
               <th scope="col" className="px-4 py-3">Enunciado</th>
@@ -142,7 +142,7 @@ export function TablaPreguntas({
           </thead>
           <tbody>
             {preguntas.map((pregunta) => (
-              <tr key={pregunta.id} className="border-b border-borde last:border-0 hover:bg-violeta-50/60">
+              <tr key={pregunta.id} className="border-b border-borde last:border-0 hover:bg-azul-50/60">
                 <td className="px-4 py-3 font-mono text-xs text-texto-secundario">{pregunta.codigo}</td>
                 <td className="max-w-xs px-4 py-3">
                   <p className="line-clamp-2 text-texto">{pregunta.enunciado}</p>

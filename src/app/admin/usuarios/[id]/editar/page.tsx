@@ -14,7 +14,7 @@ export default async function PaginaEditarUsuario({ params }: { params: Promise<
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-bold text-violeta-800">
+      <h1 className="text-2xl font-bold text-azul-800">
         Editar {perfil.nombre} {perfil.apellido}
       </h1>
       <div className="tarjeta max-w-lg">

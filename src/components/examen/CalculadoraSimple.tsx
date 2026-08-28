@@ -71,11 +71,11 @@ export function CalculadoraSimple({ onCerrar }: { onCerrar: () => void }) {
     <div className="w-64 rounded-xl border border-borde bg-blanco p-3 shadow-lg">
       <div className="mb-2 flex items-center justify-between">
         <p className="text-xs font-semibold text-texto-secundario">Calculadora</p>
-        <button type="button" onClick={onCerrar} aria-label="Cerrar calculadora" className="text-texto-secundario hover:text-violeta-700">
+        <button type="button" onClick={onCerrar} aria-label="Cerrar calculadora" className="text-texto-secundario hover:text-azul-700">
           ✕
         </button>
       </div>
-      <div className="mb-2 rounded-md bg-violeta-50 px-3 py-2 text-right text-xl font-mono">{pantalla}</div>
+      <div className="mb-2 rounded-md bg-azul-50 px-3 py-2 text-right text-xl font-mono">{pantalla}</div>
       <div className="mb-2 grid grid-cols-4 gap-1.5">
         {botones.map((b) => (
           <button
@@ -87,7 +87,7 @@ export function CalculadoraSimple({ onCerrar }: { onCerrar: () => void }) {
               else ingresarDigito(b);
             }}
             className={`rounded-md py-2 text-sm font-medium ${
-              ["÷", "×", "−", "+", "="].includes(b) ? "bg-violeta-600 text-white hover:bg-violeta-800" : "bg-violeta-50 hover:bg-violeta-100"
+              ["÷", "×", "−", "+", "="].includes(b) ? "bg-azul-600 text-white hover:bg-azul-800" : "bg-azul-50 hover:bg-azul-100"
             }`}
           >
             {b}

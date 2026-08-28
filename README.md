@@ -1,12 +1,12 @@
-# Simulador de Matemática — Arte Nuevo
+# Simulador Aprender Matemática — Instituto Santiago Ramón y Cajal
 
 Simulador educativo **independiente** de evaluaciones de Matemática, con formato similar al de las
 Pruebas Aprender, para estudiantes de 6.º año de la escuela secundaria de Argentina. Identidad
-visual de la institución Arte Nuevo (logo en `public/images/logo-arte-nuevo.png`, tokens de color
-en `src/app/globals.css`).
+visual del Instituto Santiago Ramón y Cajal (logo en `public/images/logo-cajal.png`, tokens de
+color en `src/app/globals.css`).
 
-> Simulador educativo independiente de Arte Nuevo. No pertenece ni representa a organismos
-> gubernamentales. Todas las actividades son originales.
+> Simulador educativo independiente del Instituto Santiago Ramón y Cajal. No pertenece ni
+> representa a organismos gubernamentales. Todas las actividades son originales.
 
 ## Índice
 

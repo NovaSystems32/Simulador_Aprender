@@ -14,8 +14,8 @@ export default async function PaginaCursos() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-violeta-800">Mis cursos</h1>
-        <Link href="/docente/cursos/nuevo" className="rounded-lg bg-violeta-600 px-4 py-2 text-sm font-semibold text-white hover:bg-violeta-800">
+        <h1 className="text-2xl font-bold text-azul-800">Mis cursos</h1>
+        <Link href="/docente/cursos/nuevo" className="rounded-lg bg-azul-600 px-4 py-2 text-sm font-semibold text-white hover:bg-azul-800">
           Nuevo curso
         </Link>
       </div>
@@ -30,9 +30,9 @@ export default async function PaginaCursos() {
             <Link
               key={curso.id}
               href={`/docente/cursos/${curso.id}`}
-              className="rounded-xl border border-slate-200 bg-white p-5 hover:border-violeta-600 hover:shadow-sm"
+              className="rounded-xl border border-slate-200 bg-white p-5 hover:border-azul-600 hover:shadow-sm"
             >
-              <h2 className="font-semibold text-violeta-800">
+              <h2 className="font-semibold text-azul-800">
                 {curso.nombre} &quot;{curso.division}&quot;
               </h2>
               <p className="mt-1 text-sm text-slate-500">Ciclo lectivo {curso.anio_lectivo}</p>

@@ -122,7 +122,7 @@ export default async function PaginaReportes({
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-violeta-800">Reportes</h1>
+        <h1 className="text-2xl font-bold text-azul-800">Reportes</h1>
         <BotonesExportar curso={cursoIdFiltro} evaluacion={evaluacionIdFiltro} />
       </div>
 
@@ -144,7 +144,7 @@ export default async function PaginaReportes({
       ) : (
         <>
           <div className="rounded-xl border border-slate-200 bg-white p-5">
-            <h2 className="mb-3 font-semibold text-violeta-800">Rendimiento por eje matemático</h2>
+            <h2 className="mb-3 font-semibold text-azul-800">Rendimiento por eje matemático</h2>
             <GraficoDesempeno datos={porEje} />
           </div>
 
@@ -154,7 +154,7 @@ export default async function PaginaReportes({
           </div>
 
           <div className="rounded-xl border border-slate-200 bg-white p-5">
-            <h2 className="mb-3 font-semibold text-violeta-800">Preguntas con mayor porcentaje de error</h2>
+            <h2 className="mb-3 font-semibold text-azul-800">Preguntas con mayor porcentaje de error</h2>
             {preguntasError.length === 0 ? (
               <p className="text-sm text-slate-500">Sin datos suficientes.</p>
             ) : (
@@ -191,7 +191,7 @@ function Dato({ etiqueta, valor }: { etiqueta: string; valor: string }) {
 function TablaSimple({ titulo, filas }: { titulo: string; filas: { etiqueta: string; porcentaje: number }[] }) {
   return (
     <div className="rounded-xl border border-slate-200 bg-white p-5">
-      <h2 className="mb-3 font-semibold text-violeta-800">{titulo}</h2>
+      <h2 className="mb-3 font-semibold text-azul-800">{titulo}</h2>
       {filas.length === 0 ? (
         <p className="text-sm text-slate-500">Sin datos.</p>
       ) : (

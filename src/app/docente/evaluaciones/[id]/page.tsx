@@ -31,7 +31,7 @@ export default async function PaginaDetalleEvaluacion({
     <div className="flex flex-col gap-6">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-violeta-800">{ev.nombre}</h1>
+          <h1 className="text-2xl font-bold text-azul-800">{ev.nombre}</h1>
           {ev.descripcion && <p className="mt-1 text-slate-600">{ev.descripcion}</p>}
         </div>
         <BotonesEstado evaluacionId={ev.id} estadoActual={ev.estado} />
@@ -54,7 +54,7 @@ export default async function PaginaDetalleEvaluacion({
         asignados={(asignaciones ?? []) as { curso_id: string; cursos: { nombre: string; division: string } | null }[]}
       />
 
-      <Link href={`/docente/reportes?evaluacion=${ev.id}`} className="w-fit text-sm font-medium text-violeta-600 hover:underline">
+      <Link href={`/docente/reportes?evaluacion=${ev.id}`} className="w-fit text-sm font-medium text-azul-600 hover:underline">
         Ver reportes de esta evaluación →
       </Link>
     </div>

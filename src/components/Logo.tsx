@@ -6,10 +6,13 @@ const TAMANIOS = {
   lg: 72,
 } as const;
 
+const ALT_LOGO = "Logo del Instituto Santiago Ramón y Cajal";
+
 /**
- * Logo institucional de Arte Nuevo. Cuando `sobreColor` es true (se va a mostrar sobre un fondo
- * violeta/amarillo), se envuelve en un contenedor blanco para asegurar buena visualización, tal
- * como pide la identidad institucional. El archivo original no se recorta ni se deforma.
+ * Logo institucional del Instituto Santiago Ramón y Cajal. Cuando `sobreColor` es true (se va a
+ * mostrar sobre un fondo azul/rojo), se envuelve en un contenedor blanco para asegurar buena
+ * visualización, tal como pide la identidad institucional. El archivo original no se recorta,
+ * deforma ni recolorea: solo se escala manteniendo su proporción cuadrada.
  */
 export function Logo({
   tamano = "md",
@@ -24,8 +27,8 @@ export function Logo({
 
   const imagen = (
     <Image
-      src="/images/logo-arte-nuevo.png"
-      alt="Logo de Arte Nuevo"
+      src="/images/logo-cajal.png"
+      alt={ALT_LOGO}
       width={px}
       height={px}
       priority

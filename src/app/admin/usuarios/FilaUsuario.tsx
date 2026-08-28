@@ -25,10 +25,10 @@ function useAccionesUsuario(perfil: Perfil) {
 function AccionesEstudiante({ perfil, mensajeSetter }: { perfil: Perfil; mensajeSetter: (m: Mensaje) => void }) {
   return (
     <div className="flex flex-wrap gap-3 text-xs">
-      <Link href={`/admin/usuarios/${perfil.id}`} className="font-medium text-violeta-600 hover:underline">
+      <Link href={`/admin/usuarios/${perfil.id}`} className="font-medium text-azul-600 hover:underline">
         Ver
       </Link>
-      <Link href={`/admin/usuarios/${perfil.id}/editar`} className="font-medium text-violeta-600 hover:underline">
+      <Link href={`/admin/usuarios/${perfil.id}/editar`} className="font-medium text-azul-600 hover:underline">
         Editar
       </Link>
       <ConfirmacionPeligrosa
@@ -78,7 +78,7 @@ export function FilaUsuario({ perfil }: { perfil: Perfil }) {
           </select>
         </td>
         <td className="px-4 py-3">
-          <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${perfil.activo ? "bg-exito-50 text-exito" : "bg-violeta-100 text-texto-secundario"}`}>
+          <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${perfil.activo ? "bg-exito-50 text-exito" : "bg-azul-100 text-texto-secundario"}`}>
             {perfil.activo ? "Activo" : "Inactivo"}
           </span>
         </td>
@@ -88,7 +88,7 @@ export function FilaUsuario({ perfil }: { perfil: Perfil }) {
               type="button"
               disabled={pendiente}
               onClick={toggleActivo}
-              className="text-xs font-medium text-violeta-600 hover:underline disabled:opacity-50"
+              className="text-xs font-medium text-azul-600 hover:underline disabled:opacity-50"
             >
               {perfil.activo ? "Desactivar" : "Activar"}
             </button>
@@ -119,7 +119,7 @@ export function TarjetaUsuario({ perfil }: { perfil: Perfil }) {
           </p>
           <p className="text-xs text-texto-secundario">{perfil.email}</p>
         </div>
-        <span className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ${perfil.activo ? "bg-exito-50 text-exito" : "bg-violeta-100 text-texto-secundario"}`}>
+        <span className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ${perfil.activo ? "bg-exito-50 text-exito" : "bg-azul-100 text-texto-secundario"}`}>
           {perfil.activo ? "Activo" : "Inactivo"}
         </span>
       </div>
@@ -138,7 +138,7 @@ export function TarjetaUsuario({ perfil }: { perfil: Perfil }) {
           type="button"
           disabled={pendiente}
           onClick={toggleActivo}
-          className="text-xs font-medium text-violeta-600 hover:underline disabled:opacity-50"
+          className="text-xs font-medium text-azul-600 hover:underline disabled:opacity-50"
         >
           {perfil.activo ? "Desactivar" : "Activar"}
         </button>

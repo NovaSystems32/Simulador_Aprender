@@ -104,8 +104,8 @@ export function FormularioPregunta({
         />
       </Campo>
       {enunciado && (
-        <div className="rounded-lg bg-violeta-100 p-3 text-sm">
-          <p className="mb-1 font-medium text-violeta-800">Vista previa:</p>
+        <div className="rounded-lg bg-azul-100 p-3 text-sm">
+          <p className="mb-1 font-medium text-azul-800">Vista previa:</p>
           <TextoConFormulas texto={enunciado} />
         </div>
       )}
@@ -198,7 +198,7 @@ export function FormularioPregunta({
       <button
         type="submit"
         disabled={enviando}
-        className="self-start rounded-lg bg-violeta-600 px-5 py-2.5 font-semibold text-white hover:bg-violeta-800 disabled:opacity-60"
+        className="self-start rounded-lg bg-azul-600 px-5 py-2.5 font-semibold text-white hover:bg-azul-800 disabled:opacity-60"
       >
         {enviando ? "Guardando..." : "Guardar pregunta"}
       </button>

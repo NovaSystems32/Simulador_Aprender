@@ -34,7 +34,7 @@ export default async function PanelEstudiante() {
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-bold text-violeta-800">Hola, {perfil.nombre}</h1>
+      <h1 className="text-2xl font-bold text-azul-800">Hola, {perfil.nombre}</h1>
 
       <div>
         <h2 className="mb-3 text-lg font-semibold text-slate-800">Evaluaciones asignadas</h2>
@@ -54,7 +54,7 @@ export default async function PanelEstudiante() {
 
               return (
                 <div key={ev.id} className="rounded-xl border border-slate-200 bg-white p-5">
-                  <h3 className="font-semibold text-violeta-800">{ev.nombre}</h3>
+                  <h3 className="font-semibold text-azul-800">{ev.nombre}</h3>
                   <p className="mt-1 text-sm text-slate-500">
                     {ev.cantidad_preguntas} preguntas · {ev.duracion_minutos} minutos · {usados}/{ev.intentos_max} intentos usados
                   </p>
@@ -70,7 +70,7 @@ export default async function PanelEstudiante() {
                   {!cerrada && !noAbrio && !sinIntentos && (
                     <Link
                       href={`/estudiante/evaluacion/${ev.id}`}
-                      className="mt-3 inline-block rounded-lg bg-violeta-600 px-4 py-2 text-sm font-semibold text-white hover:bg-violeta-800"
+                      className="mt-3 inline-block rounded-lg bg-azul-600 px-4 py-2 text-sm font-semibold text-white hover:bg-azul-800"
                     >
                       {enCurso ? "Continuar evaluación" : "Ver instrucciones"}
                     </Link>
@@ -82,7 +82,7 @@ export default async function PanelEstudiante() {
         )}
       </div>
 
-      <Link href="/estudiante/historial" className="w-fit text-sm font-medium text-violeta-600 hover:underline">
+      <Link href="/estudiante/historial" className="w-fit text-sm font-medium text-azul-600 hover:underline">
         Ver mi historial de intentos →
       </Link>
     </div>

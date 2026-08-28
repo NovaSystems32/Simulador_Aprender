@@ -30,12 +30,12 @@ export default async function PaginaBancoPreguntasAdmin({
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-violeta-800">Banco de preguntas (todas las instituciones)</h1>
+          <h1 className="text-2xl font-bold text-azul-800">Banco de preguntas (todas las instituciones)</h1>
           <p className="text-sm text-slate-600">Como administrador, ves el banco completo de todos los docentes.</p>
         </div>
         <Link
           href="/admin/preguntas/nueva"
-          className="rounded-lg bg-violeta-600 px-4 py-2 text-sm font-semibold text-white hover:bg-violeta-800"
+          className="rounded-lg bg-azul-600 px-4 py-2 text-sm font-semibold text-white hover:bg-azul-800"
         >
           Nueva pregunta
         </Link>

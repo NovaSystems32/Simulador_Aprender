@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { exigirPerfil } from "@/lib/auth";
 import { crearClienteServidor } from "@/lib/supabase/server";
 import { FormularioNuevoCursoAdmin } from "./FormularioNuevoCursoAdmin";
@@ -12,12 +13,17 @@ export default async function PaginaCursosAdmin() {
     .order("nombre");
   const { data: docentes } = await supabase.from("perfiles").select("id, nombre, apellido").eq("rol", "docente");
 
+  const { data: conteos } = await supabase.from("curso_integrantes").select("curso_id").eq("rol_en_curso", "estudiante");
+  const cantidadPorCurso = new Map<string, number>();
+  for (const c of conteos ?? []) cantidadPorCurso.set(c.curso_id, (cantidadPorCurso.get(c.curso_id) ?? 0) + 1);
+
   const filas = (cursos ?? []).map((c) => ({
     id: c.id as string,
     nombre: c.nombre as string,
     division: c.division as string,
     anio_lectivo: c.anio_lectivo as number,
     docente: c.perfiles as unknown as { nombre: string; apellido: string } | null,
+    estudiantes: cantidadPorCurso.get(c.id as string) ?? 0,
   }));
 
   return (
@@ -33,6 +39,8 @@ export default async function PaginaCursosAdmin() {
               <th className="px-4 py-3">Curso</th>
               <th className="px-4 py-3">Ciclo lectivo</th>
               <th className="px-4 py-3">Docente titular</th>
+              <th className="px-4 py-3">Estudiantes</th>
+              <th className="px-4 py-3" />
             </tr>
           </thead>
           <tbody>
@@ -44,6 +52,12 @@ export default async function PaginaCursosAdmin() {
                 <td className="px-4 py-3 text-texto-secundario">{c.anio_lectivo}</td>
                 <td className="px-4 py-3 text-texto-secundario">
                   {c.docente ? `${c.docente.nombre} ${c.docente.apellido}` : "Sin asignar"}
+                </td>
+                <td className="px-4 py-3 text-texto-secundario">{c.estudiantes}</td>
+                <td className="px-4 py-3">
+                  <Link href={`/docente/cursos/${c.id}`} className="font-medium text-azul-600 hover:underline">
+                    Ver / gestionar estudiantes
+                  </Link>
                 </td>
               </tr>
             ))}
@@ -66,7 +80,17 @@ export default async function PaginaCursosAdmin() {
                 <dt className="text-texto-secundario/70">Docente titular</dt>
                 <dd>{c.docente ? `${c.docente.nombre} ${c.docente.apellido}` : "Sin asignar"}</dd>
               </div>
+              <div>
+                <dt className="text-texto-secundario/70">Estudiantes</dt>
+                <dd>{c.estudiantes}</dd>
+              </div>
             </dl>
+            <Link
+              href={`/docente/cursos/${c.id}`}
+              className="mt-3 inline-block text-sm font-medium text-azul-600 hover:underline"
+            >
+              Ver / gestionar estudiantes →
+            </Link>
           </div>
         ))}
       </div>

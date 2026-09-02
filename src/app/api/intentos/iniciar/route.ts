@@ -36,20 +36,27 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "La evaluación ya cerró." }, { status: 403 });
   }
 
-  const { data: integrante } = await admin
+  // El estudiante puede rendir si pertenece al curso "de origen" de la
+  // evaluación (curso_id) o a cualquier otro curso al que se la haya
+  // asignado explícitamente (tabla asignaciones). Antes acá se exigía
+  // ADEMÁS que curso_id figurara como propia asignación, algo que la
+  // creación de evaluaciones nunca generaba: eso bloqueaba a estudiantes
+  // que sí veían la evaluación en su panel.
+  const { data: misCursos } = await admin
     .from("curso_integrantes")
-    .select("id")
-    .eq("curso_id", ev.curso_id)
+    .select("curso_id")
     .eq("perfil_id", user.id)
-    .eq("rol_en_curso", "estudiante")
-    .maybeSingle();
-  const { data: asignacion } = await admin
+    .eq("rol_en_curso", "estudiante");
+  const misCursoIds = new Set((misCursos ?? []).map((c) => c.curso_id));
+
+  const { data: asignaciones } = await admin
     .from("asignaciones")
-    .select("id")
-    .eq("evaluacion_id", ev.id)
-    .eq("curso_id", ev.curso_id)
-    .maybeSingle();
-  if (!integrante || !asignacion) {
+    .select("curso_id")
+    .eq("evaluacion_id", ev.id);
+  const cursosConAcceso = new Set([ev.curso_id, ...(asignaciones ?? []).map((a) => a.curso_id)]);
+
+  const tieneAcceso = [...misCursoIds].some((id) => cursosConAcceso.has(id));
+  if (!tieneAcceso) {
     return NextResponse.json({ error: "Esta evaluación no está asignada a tu curso." }, { status: 403 });
   }
 

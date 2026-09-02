@@ -82,32 +82,9 @@ export async function incorporarEstudianteNuevo(
   };
 }
 
-export async function incorporarEstudianteExistente(cursoId: string, email: string): Promise<EstadoFormulario> {
-  await exigirPerfil(["docente", "admin"]);
-  const admin = crearClienteAdmin();
-
-  const { data: perfilEstudiante } = await admin
-    .from("perfiles")
-    .select("id, rol")
-    .eq("email", email.trim().toLowerCase())
-    .maybeSingle();
-
-  if (!perfilEstudiante || perfilEstudiante.rol !== "estudiante") {
-    return { error: "No se encontró un estudiante activo con ese correo." };
-  }
-
-  const { error } = await admin
-    .from("curso_integrantes")
-    .insert({ curso_id: cursoId, perfil_id: perfilEstudiante.id, rol_en_curso: "estudiante" });
-
-  if (error) {
-    if (error.code === "23505") return { error: "Ese estudiante ya está en el curso." };
-    return { error: `No se pudo agregar: ${error.message}` };
-  }
-
-  revalidatePath(`/docente/cursos/${cursoId}`);
-  return { error: null, mensaje: "Estudiante agregado al curso." };
-}
+// Agregar un estudiante ya registrado se hace ahora en lote desde
+// GestionEstudiantesCurso (ver agregarEstudiantesAlCurso más abajo), con
+// búsqueda y selección múltiple en vez de un campo de correo uno por uno.
 
 export async function quitarIntegrante(cursoId: string, perfilId: string) {
   await exigirPerfil(["docente", "admin"]);
@@ -119,4 +96,68 @@ export async function quitarIntegrante(cursoId: string, perfilId: string) {
     .eq("perfil_id", perfilId);
   if (error) throw new Error(`No se pudo quitar al integrante: ${error.message}`);
   revalidatePath(`/docente/cursos/${cursoId}`);
+}
+
+export interface ResultadoAccionCurso {
+  ok: boolean;
+  mensaje: string;
+}
+
+/** Alta masiva: agrega varios estudiantes ya registrados a un curso de una sola vez. */
+export async function agregarEstudiantesAlCurso(
+  cursoId: string,
+  perfilIds: string[]
+): Promise<ResultadoAccionCurso> {
+  await exigirPerfil(["docente", "admin"]);
+  if (perfilIds.length === 0) return { ok: false, mensaje: "Seleccioná al menos un estudiante." };
+
+  const supabase = await crearClienteServidor();
+
+  // No duplicar inscripciones: se filtran los que ya están en el curso antes de insertar.
+  const { data: yaInscriptos } = await supabase
+    .from("curso_integrantes")
+    .select("perfil_id")
+    .eq("curso_id", cursoId)
+    .in("perfil_id", perfilIds);
+  const idsExistentes = new Set((yaInscriptos ?? []).map((i) => i.perfil_id));
+  const nuevos = perfilIds.filter((id) => !idsExistentes.has(id));
+
+  if (nuevos.length === 0) {
+    return { ok: false, mensaje: "Los estudiantes seleccionados ya estaban en el curso." };
+  }
+
+  const { error } = await supabase
+    .from("curso_integrantes")
+    .insert(nuevos.map((perfilId) => ({ curso_id: cursoId, perfil_id: perfilId, rol_en_curso: "estudiante" as const })));
+  if (error) return { ok: false, mensaje: `No se pudo agregar a los estudiantes: ${error.message}` };
+
+  revalidatePath(`/docente/cursos/${cursoId}`);
+  const omitidos = perfilIds.length - nuevos.length;
+  return {
+    ok: true,
+    mensaje:
+      omitidos > 0
+        ? `Se agregaron ${nuevos.length} estudiante(s) (${omitidos} ya estaban en el curso).`
+        : `Se agregaron ${nuevos.length} estudiante(s) al curso.`,
+  };
+}
+
+/** Baja masiva: quita varios estudiantes de un curso de una sola vez. */
+export async function quitarEstudiantesDelCurso(
+  cursoId: string,
+  perfilIds: string[]
+): Promise<ResultadoAccionCurso> {
+  await exigirPerfil(["docente", "admin"]);
+  if (perfilIds.length === 0) return { ok: false, mensaje: "Seleccioná al menos un estudiante." };
+
+  const supabase = await crearClienteServidor();
+  const { error } = await supabase
+    .from("curso_integrantes")
+    .delete()
+    .eq("curso_id", cursoId)
+    .in("perfil_id", perfilIds);
+  if (error) return { ok: false, mensaje: `No se pudo quitar a los estudiantes: ${error.message}` };
+
+  revalidatePath(`/docente/cursos/${cursoId}`);
+  return { ok: true, mensaje: `Se quitó a ${perfilIds.length} estudiante(s) del curso.` };
 }

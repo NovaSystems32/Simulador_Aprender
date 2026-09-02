@@ -1,6 +1,7 @@
 import { exigirPerfil } from "@/lib/auth";
 import { crearClienteServidor } from "@/lib/supabase/server";
 import { CAPACIDADES, DIFICULTADES, EJES } from "@/lib/types";
+import { agregarPorTipo, calcularEstadisticas, calcularPreguntasConMasErrores } from "@/lib/reportes";
 import { GraficoDesempeno } from "@/components/resultados/GraficoDesempeno";
 import { FiltrosReportes } from "./FiltrosReportes";
 import { BotonesExportar } from "./BotonesExportar";
@@ -12,13 +13,31 @@ const ETIQUETA_DIFICULTAD = Object.fromEntries(DIFICULTADES.map((d) => [d.value,
 export default async function PaginaReportes({
   searchParams,
 }: {
-  searchParams: Promise<{ curso?: string; evaluacion?: string }>;
+  searchParams: Promise<{ curso?: string; evaluacion?: string; estudiante?: string }>;
 }) {
   await exigirPerfil(["docente", "admin"]);
-  const { curso: cursoIdFiltro, evaluacion: evaluacionIdFiltro } = await searchParams;
+  const { curso: cursoIdFiltro, evaluacion: evaluacionIdFiltro, estudiante: estudianteIdFiltro } = await searchParams;
   const supabase = await crearClienteServidor();
 
   const { data: cursos } = await supabase.from("cursos").select("*").order("nombre");
+
+  // Estudiantes para el selector de "Informe por estudiante": los del curso
+  // filtrado, o todos los que la RLS deje ver (los propios cursos si es
+  // docente, todos si es admin) cuando no hay curso seleccionado.
+  let consultaEstudiantes = supabase
+    .from("curso_integrantes")
+    .select("perfiles(id,nombre,apellido,email)")
+    .eq("rol_en_curso", "estudiante");
+  if (cursoIdFiltro) consultaEstudiantes = consultaEstudiantes.eq("curso_id", cursoIdFiltro);
+  const { data: filasEstudiantes } = await consultaEstudiantes;
+  const estudiantesPorId = new Map<string, { id: string; nombre: string; apellido: string; email: string }>();
+  for (const fila of filasEstudiantes ?? []) {
+    const p = fila.perfiles as unknown as { id: string; nombre: string; apellido: string; email: string } | null;
+    if (p) estudiantesPorId.set(p.id, p);
+  }
+  const estudiantesDisponibles = Array.from(estudiantesPorId.values()).sort((a, b) =>
+    a.apellido.localeCompare(b.apellido)
+  );
   const { data: evaluaciones } = await supabase
     .from("evaluaciones")
     .select("*")
@@ -39,17 +58,8 @@ export default async function PaginaReportes({
   const { data: intentos } = await consultaIntentos;
   const listaIntentos = intentos ?? [];
 
-  const totalIntentos = listaIntentos.length;
-  const promedio = totalIntentos
-    ? Math.round((listaIntentos.reduce((s, i) => s + (i.porcentaje_obtenido ?? 0), 0) / totalIntentos) * 100) / 100
-    : 0;
-  const aprobados = listaIntentos.filter((i) => i.aprobado).length;
-  const porcentajeAprobacion = totalIntentos ? Math.round((aprobados / totalIntentos) * 10000) / 100 : 0;
-  const mejor = totalIntentos ? Math.max(...listaIntentos.map((i) => i.porcentaje_obtenido ?? 0)) : 0;
-  const peor = totalIntentos ? Math.min(...listaIntentos.map((i) => i.porcentaje_obtenido ?? 0)) : 0;
-  const tiempoPromedioMin = totalIntentos
-    ? Math.round(listaIntentos.reduce((s, i) => s + (i.tiempo_utilizado_segundos ?? 0), 0) / totalIntentos / 60)
-    : 0;
+  const { totalIntentos, promedio, porcentajeAprobacion, mejor, peor, tiempoPromedioMin } =
+    calcularEstadisticas(listaIntentos);
 
   const idsIntentos = listaIntentos.map((i) => i.id);
   let desglose: { tipo_agrupacion: string; clave: string; correctas: number; total: number }[] = [];
@@ -61,23 +71,9 @@ export default async function PaginaReportes({
     desglose = data ?? [];
   }
 
-  function agregarPorTipo(tipo: string, etiquetas: Record<string, string>) {
-    const acumulado = new Map<string, { correctas: number; total: number }>();
-    for (const fila of desglose.filter((d) => d.tipo_agrupacion === tipo)) {
-      const actual = acumulado.get(fila.clave) ?? { correctas: 0, total: 0 };
-      actual.correctas += fila.correctas;
-      actual.total += fila.total;
-      acumulado.set(fila.clave, actual);
-    }
-    return Array.from(acumulado.entries()).map(([clave, v]) => ({
-      etiqueta: etiquetas[clave] ?? clave,
-      porcentaje: v.total === 0 ? 0 : Math.round((v.correctas / v.total) * 10000) / 100,
-    }));
-  }
-
-  const porEje = agregarPorTipo("eje", ETIQUETA_EJE);
-  const porCapacidad = agregarPorTipo("capacidad", ETIQUETA_CAPACIDAD);
-  const porDificultad = agregarPorTipo("dificultad", ETIQUETA_DIFICULTAD);
+  const porEje = agregarPorTipo(desglose, "eje", ETIQUETA_EJE);
+  const porCapacidad = agregarPorTipo(desglose, "capacidad", ETIQUETA_CAPACIDAD);
+  const porDificultad = agregarPorTipo(desglose, "dificultad", ETIQUETA_DIFICULTAD);
 
   // Preguntas con mayor porcentaje de error
   let preguntasError: { pregunta_id: string; enunciado: string; codigo: string; incorrectas: number; total: number }[] = [];
@@ -93,40 +89,27 @@ export default async function PaginaReportes({
     const { data: preguntasInfo } = await supabase.from("preguntas").select("id, codigo, enunciado");
 
     const infoPorId = new Map((preguntasInfo ?? []).map((p) => [p.id, p]));
-    const respuestaClave = (intentoId: string, preguntaId: string) => `${intentoId}::${preguntaId}`;
-    const respuestasPorClave = new Map(
-      (respuestasTodas ?? []).map((r) => [respuestaClave(r.intento_id, r.pregunta_id), r.opcion_seleccionada])
+
+    preguntasError = calcularPreguntasConMasErrores(
+      idsIntentos,
+      preguntasIntento ?? [],
+      respuestasTodas ?? [],
+      infoPorId
     );
-
-    const conteo = new Map<string, { incorrectas: number; total: number }>();
-    for (const pi of preguntasIntento ?? []) {
-      const seleccionada = respuestasPorClave.get(respuestaClave(pi.intento_id, pi.pregunta_id));
-      const actual = conteo.get(pi.pregunta_id) ?? { incorrectas: 0, total: 0 };
-      actual.total += 1;
-      if (seleccionada !== pi.respuesta_correcta) actual.incorrectas += 1;
-      conteo.set(pi.pregunta_id, actual);
-    }
-
-    preguntasError = Array.from(conteo.entries())
-      .map(([preguntaId, v]) => ({
-        pregunta_id: preguntaId,
-        codigo: infoPorId.get(preguntaId)?.codigo ?? "—",
-        enunciado: infoPorId.get(preguntaId)?.enunciado ?? "",
-        incorrectas: v.incorrectas,
-        total: v.total,
-      }))
-      .sort((a, b) => b.incorrectas / b.total - a.incorrectas / a.total)
-      .slice(0, 10);
   }
 
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-azul-800">Reportes</h1>
-        <BotonesExportar curso={cursoIdFiltro} evaluacion={evaluacionIdFiltro} />
+        <BotonesExportar curso={cursoIdFiltro} evaluacion={evaluacionIdFiltro} estudiante={estudianteIdFiltro} />
       </div>
 
-      <FiltrosReportes cursos={cursos ?? []} evaluaciones={evaluacionesFiltradas} />
+      <FiltrosReportes
+        cursos={cursos ?? []}
+        evaluaciones={evaluacionesFiltradas}
+        estudiantes={estudiantesDisponibles}
+      />
 
       <div className="grid grid-cols-2 gap-4 rounded-xl border border-slate-200 bg-white p-5 sm:grid-cols-3 lg:grid-cols-6">
         <Dato etiqueta="Intentos" valor={String(totalIntentos)} />

@@ -14,15 +14,35 @@ export default async function PanelEstudiante() {
     .eq("rol_en_curso", "estudiante");
   const cursoIds = (cursos ?? []).map((c) => c.curso_id);
 
+  // Una evaluación es visible si el curso del estudiante es su curso "de
+  // origen" (curso_id) O si el curso fue sumado luego desde "Cursos
+  // asignados" (tabla asignaciones). Se combinan ambas fuentes acá porque
+  // ninguna sola alcanza para reflejar lo que el docente configuró.
   let evaluaciones: Evaluacion[] = [];
   if (cursoIds.length > 0) {
-    const { data } = await supabase
-      .from("evaluaciones")
-      .select("*")
-      .in("curso_id", cursoIds)
-      .eq("estado", "publicada")
-      .order("fecha_apertura", { ascending: true });
-    evaluaciones = (data ?? []) as Evaluacion[];
+    const [{ data: porOrigen }, { data: asignaciones }] = await Promise.all([
+      supabase.from("evaluaciones").select("*").in("curso_id", cursoIds).eq("estado", "publicada"),
+      supabase.from("asignaciones").select("evaluacion_id").in("curso_id", cursoIds),
+    ]);
+
+    const idsPorAsignacion = (asignaciones ?? []).map((a) => a.evaluacion_id);
+    let porAsignacion: Evaluacion[] = [];
+    if (idsPorAsignacion.length > 0) {
+      const { data } = await supabase
+        .from("evaluaciones")
+        .select("*")
+        .in("id", idsPorAsignacion)
+        .eq("estado", "publicada");
+      porAsignacion = (data ?? []) as Evaluacion[];
+    }
+
+    const porId = new Map<string, Evaluacion>();
+    for (const ev of [...(porOrigen ?? []), ...porAsignacion] as Evaluacion[]) porId.set(ev.id, ev);
+    evaluaciones = Array.from(porId.values()).sort((a, b) => {
+      const fa = a.fecha_apertura ? new Date(a.fecha_apertura).getTime() : 0;
+      const fb = b.fecha_apertura ? new Date(b.fecha_apertura).getTime() : 0;
+      return fa - fb;
+    });
   }
 
   const { data: intentos } = await supabase

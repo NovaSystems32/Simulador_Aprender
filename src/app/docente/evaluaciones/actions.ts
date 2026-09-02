@@ -84,8 +84,26 @@ export async function crearEvaluacionManual(
     return { error: `Evaluación creada, pero hubo un error al asociar las preguntas: ${errorPreguntas.message}` };
   }
 
+  await autoAsignarCursoDeOrigen(supabase, evaluacion.id, comun.curso_id);
+
   revalidatePath("/docente/evaluaciones");
   redirect(`/docente/evaluaciones/${evaluacion.id}`);
+}
+
+/**
+ * El curso elegido al crear la evaluación (evaluaciones.curso_id) es
+ * obligatorio, así que también debe quedar "asignado" desde el vamos: sin
+ * esto, los estudiantes de ese curso no veían la evaluación en su panel ni
+ * podían rendirla hasta que alguien repitiera manualmente el mismo curso en
+ * "Cursos asignados". No falla la creación de la evaluación si esto falla
+ * (ya existe, por ejemplo); el docente puede agregarlo a mano desde el panel.
+ */
+async function autoAsignarCursoDeOrigen(
+  supabase: Awaited<ReturnType<typeof crearClienteServidor>>,
+  evaluacionId: string,
+  cursoId: string
+) {
+  await supabase.from("asignaciones").insert({ evaluacion_id: evaluacionId, curso_id: cursoId });
 }
 
 export async function crearEvaluacionAutomatica(
@@ -129,6 +147,8 @@ export async function crearEvaluacionAutomatica(
   if (error || !evaluacion) {
     return { error: `No se pudo crear la evaluación: ${error?.message}` };
   }
+
+  await autoAsignarCursoDeOrigen(supabase, evaluacion.id, comun.curso_id);
 
   revalidatePath("/docente/evaluaciones");
   redirect(`/docente/evaluaciones/${evaluacion.id}`);

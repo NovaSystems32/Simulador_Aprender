@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { exigirPerfil } from "@/lib/auth";
 import { crearClienteServidor } from "@/lib/supabase/server";
 import { CAPACIDADES, DIFICULTADES, EJES, type Pregunta } from "@/lib/types";
+import { TextoConFormulas } from "@/components/preguntas/VistaPreviaMatematica";
 
 const ETIQUETA_EJE = Object.fromEntries(EJES.map((e) => [e.value, e.label]));
 const ETIQUETA_CAPACIDAD = Object.fromEntries(CAPACIDADES.map((c) => [c.value, c.label]));
@@ -50,7 +51,9 @@ export default async function PaginaVerPregunta({ params }: { params: Promise<{ 
           <span className="insignia-rojo">{ETIQUETA_DIFICULTAD[pregunta.dificultad]}</span>
         </div>
 
-        <p className="text-texto">{pregunta.enunciado}</p>
+        <p className="text-texto">
+          <TextoConFormulas texto={pregunta.enunciado} />
+        </p>
 
         {pregunta.recurso_url && (
           <Image
@@ -69,14 +72,16 @@ export default async function PaginaVerPregunta({ params }: { params: Promise<{ 
               key={o.letra}
               className={`rounded-lg border px-3 py-2 text-sm ${o.letra === pregunta.respuesta_correcta ? "border-exito bg-exito-50 text-exito" : "border-borde text-texto"}`}
             >
-              <strong>{o.letra}.</strong> {o.texto}
+              <strong>{o.letra}.</strong> <TextoConFormulas texto={o.texto} />
             </li>
           ))}
         </ul>
 
         <div>
           <p className="text-xs font-medium text-texto-secundario">Explicación</p>
-          <p className="mt-1 text-sm text-texto">{pregunta.explicacion}</p>
+          <p className="mt-1 text-sm text-texto">
+            <TextoConFormulas texto={pregunta.explicacion} />
+          </p>
         </div>
 
         <p className="text-xs text-texto-secundario">

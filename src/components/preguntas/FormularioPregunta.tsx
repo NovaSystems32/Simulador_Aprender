@@ -2,7 +2,7 @@
 
 import { useActionState, useEffect, useState } from "react";
 import { CAPACIDADES, DIFICULTADES, EJES, type Pregunta } from "@/lib/types";
-import { TextoConFormulas } from "./VistaPreviaMatematica";
+import { CampoTextoConEcuaciones } from "./CampoTextoConEcuaciones";
 import type { EstadoFormularioPregunta } from "@/app/docente/preguntas/actions";
 
 const ESTADO_INICIAL: EstadoFormularioPregunta = { error: null, ok: false };
@@ -24,6 +24,7 @@ export function FormularioPregunta({
     d: pregunta?.opcion_d ?? "",
   });
   const [enunciado, setEnunciado] = useState(pregunta?.enunciado ?? "");
+  const [explicacion, setExplicacion] = useState(pregunta?.explicacion ?? "");
 
   useEffect(() => {
     if (estado.ok) onExito?.();
@@ -92,23 +93,16 @@ export function FormularioPregunta({
         </Campo>
       </fieldset>
 
-      <Campo label="Enunciado" htmlFor="enunciado" ayuda="Podés escribir fórmulas entre signos $, por ejemplo $x^2 + 5$.">
-        <textarea
-          id="enunciado"
-          name="enunciado"
-          required
-          rows={4}
-          value={enunciado}
-          onChange={(e) => setEnunciado(e.target.value)}
-          className="campo-texto"
-        />
-      </Campo>
-      {enunciado && (
-        <div className="rounded-lg bg-azul-100 p-3 text-sm">
-          <p className="mb-1 font-medium text-azul-800">Vista previa:</p>
-          <TextoConFormulas texto={enunciado} />
-        </div>
-      )}
+      <CampoTextoConEcuaciones
+        id="enunciado"
+        name="enunciado"
+        label="Enunciado"
+        required
+        rows={4}
+        value={enunciado}
+        onChange={setEnunciado}
+        ayuda="Usá el botón «Insertar ecuación» para fórmulas, o escribilas a mano entre signos $ (en línea) o $$ (centrada)."
+      />
 
       <Campo label="Recurso visual (URL de imagen, opcional)" htmlFor="recurso_url">
         <input
@@ -134,17 +128,16 @@ export function FormularioPregunta({
       <fieldset className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <legend className="text-sm font-medium text-slate-700">Opciones de respuesta</legend>
         {(["a", "b", "c", "d"] as const).map((letra) => (
-          <Campo key={letra} label={`Opción ${letra.toUpperCase()}`} htmlFor={`opcion_${letra}`}>
-            <input
-              id={`opcion_${letra}`}
-              name={`opcion_${letra}`}
-              type="text"
-              required
-              value={opciones[letra]}
-              onChange={(e) => setOpciones((prev) => ({ ...prev, [letra]: e.target.value }))}
-              className="campo-texto"
-            />
-          </Campo>
+          <CampoTextoConEcuaciones
+            key={letra}
+            id={`opcion_${letra}`}
+            name={`opcion_${letra}`}
+            label={`Opción ${letra.toUpperCase()}`}
+            required
+            rows={2}
+            value={opciones[letra]}
+            onChange={(valor) => setOpciones((prev) => ({ ...prev, [letra]: valor }))}
+          />
         ))}
       </fieldset>
 
@@ -165,16 +158,15 @@ export function FormularioPregunta({
         </div>
       </Campo>
 
-      <Campo label="Explicación de la resolución (paso a paso)" htmlFor="explicacion">
-        <textarea
-          id="explicacion"
-          name="explicacion"
-          required
-          rows={4}
-          defaultValue={pregunta?.explicacion ?? ""}
-          className="campo-texto"
-        />
-      </Campo>
+      <CampoTextoConEcuaciones
+        id="explicacion"
+        name="explicacion"
+        label="Explicación de la resolución (paso a paso)"
+        required
+        rows={4}
+        value={explicacion}
+        onChange={setExplicacion}
+      />
 
       <Campo label="Estado" htmlFor="estado">
         <select id="estado" name="estado" defaultValue={pregunta?.estado ?? "borrador"} className="campo-select">

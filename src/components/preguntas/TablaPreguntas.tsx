@@ -10,6 +10,7 @@ import {
   obtenerResumenEliminacionPregunta,
 } from "@/app/docente/preguntas/actions";
 import { ConfirmacionPeligrosa } from "@/components/admin/ConfirmacionPeligrosa";
+import { TextoConFormulas } from "./VistaPreviaMatematica";
 
 const ETIQUETA_EJE = Object.fromEntries(EJES.map((e) => [e.value, e.label]));
 const ETIQUETA_CAPACIDAD = Object.fromEntries(CAPACIDADES.map((c) => [c.value, c.label]));
@@ -145,7 +146,9 @@ export function TablaPreguntas({
               <tr key={pregunta.id} className="border-b border-borde last:border-0 hover:bg-azul-50/60">
                 <td className="px-4 py-3 font-mono text-xs text-texto-secundario">{pregunta.codigo}</td>
                 <td className="max-w-xs px-4 py-3">
-                  <p className="line-clamp-2 text-texto">{pregunta.enunciado}</p>
+                  <p className="line-clamp-2 text-texto">
+                    <TextoConFormulas texto={pregunta.enunciado} />
+                  </p>
                 </td>
                 <td className="px-4 py-3 text-texto-secundario">
                   <p>{ETIQUETA_EJE[pregunta.eje]}</p>
@@ -177,7 +180,9 @@ export function TablaPreguntas({
                 {ETIQUETA_ESTADO[pregunta.estado]}
               </span>
             </div>
-            <p className="mt-2 text-sm text-texto">{pregunta.enunciado}</p>
+            <p className="mt-2 text-sm text-texto">
+              <TextoConFormulas texto={pregunta.enunciado} />
+            </p>
             <dl className="mt-3 grid grid-cols-2 gap-2 text-xs text-texto-secundario">
               <div>
                 <dt className="text-texto-secundario/70">Eje</dt>

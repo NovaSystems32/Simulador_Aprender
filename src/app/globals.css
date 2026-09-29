@@ -132,6 +132,15 @@ body {
   }
 }
 
+/* El editor de ecuaciones es siempre visual: se oculta el menú propio de
+   MathLive (incluye ítems como "Copy as LaTeX" o "LaTeX source" que
+   expondrían código que el docente no tiene por qué ver ni conocer). El
+   teclado matemático en pantalla (otro ícono del campo) sí queda visible: es
+   útil en celular/tablet y no muestra código. */
+.editor-ecuaciones-campo::part(menu-toggle) {
+  display: none;
+}
+
 @media print {
   .no-imprimir {
     display: none !important;

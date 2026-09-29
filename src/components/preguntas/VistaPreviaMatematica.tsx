@@ -31,6 +31,62 @@ function esFormulaValida(contenido: string): boolean {
   return contenido.length > 0 && !/^\s|\s$/.test(contenido);
 }
 
+export interface SegmentoTexto {
+  tipo: "texto";
+  contenido: string;
+  inicio: number;
+  fin: number;
+}
+
+export interface SegmentoFormula {
+  tipo: "formula";
+  /** TeX sin delimitadores. */
+  tex: string;
+  modo: "linea" | "bloque";
+  /** Rango en el string ORIGINAL, delimitadores incluidos. */
+  inicio: number;
+  fin: number;
+}
+
+export type Segmento = SegmentoTexto | SegmentoFormula;
+
+/**
+ * Parte un texto en segmentos de texto plano y fórmulas ($...$ o $$...$$),
+ * conservando el rango [inicio, fin) de cada uno en el string original. La
+ * usan tanto TextoConFormulas (renderizado de solo lectura) como el preview
+ * editable de CampoTextoConEcuaciones (que necesita saber en qué posición
+ * exacta está cada fórmula para poder editarla con un doble clic).
+ */
+export function segmentarFormulas(texto: string): Segmento[] {
+  const segmentos: Segmento[] = [];
+  // $$...$$ (bloque) y $...$ (en línea), en el orden en que aparecen.
+  const regex = /\$\$([^$]+)\$\$|\$([^$]+)\$/g;
+  let cursor = 0;
+  let coincidencia: RegExpExecArray | null;
+
+  while ((coincidencia = regex.exec(texto)) !== null) {
+    const [completo, contenidoBloque, contenidoLinea] = coincidencia;
+    const inicio = coincidencia.index;
+    const fin = inicio + completo.length;
+    const esBloque = contenidoBloque !== undefined;
+    const contenido = esBloque ? contenidoBloque : contenidoLinea;
+
+    if (!esFormulaValida(contenido)) continue;
+
+    if (inicio > cursor) {
+      segmentos.push({ tipo: "texto", contenido: texto.slice(cursor, inicio), inicio: cursor, fin: inicio });
+    }
+    segmentos.push({ tipo: "formula", tex: contenido, modo: esBloque ? "bloque" : "linea", inicio, fin });
+    cursor = fin;
+  }
+
+  if (cursor < texto.length) {
+    segmentos.push({ tipo: "texto", contenido: texto.slice(cursor), inicio: cursor, fin: texto.length });
+  }
+
+  return segmentos;
+}
+
 /**
  * Muestra texto con fórmulas en LaTeX delimitadas por $$...$$ (ecuación
  * centrada/bloque) o $...$ (en línea). El resto del texto se muestra tal
@@ -40,36 +96,17 @@ function esFormulaValida(contenido: string): boolean {
  */
 export function TextoConFormulas({ texto, className }: { texto: string; className?: string }) {
   if (!texto) return null;
-  // Primero $$...$$ (bloque), y sobre lo que queda, $...$ (en línea). El
-  // orden importa: si se buscara $...$ primero, "$$x$$" se partiría mal.
-  const bloques = texto.split(/(\$\$[^$]+\$\$)/g);
+  const segmentos = segmentarFormulas(texto);
 
   return (
     <span className={className}>
-      {bloques.map((bloque, indiceBloque) => {
-        if (bloque.startsWith("$$") && bloque.endsWith("$$") && bloque.length > 4) {
-          const formula = bloque.slice(2, -2);
-          if (esFormulaValida(formula)) {
-            return (
-              <BlockMath key={indiceBloque} math={formula} renderError={() => <ErrorFormula texto={bloque} />} />
-            );
-          }
-        }
-        const partesEnLinea = bloque.split(/(\$[^$]+\$)/g);
-        return (
-          <span key={indiceBloque}>
-            {partesEnLinea.map((parte, indice) => {
-              if (parte.startsWith("$") && parte.endsWith("$") && parte.length > 2) {
-                const formula = parte.slice(1, -1);
-                if (esFormulaValida(formula)) {
-                  return (
-                    <InlineMath key={indice} math={formula} renderError={() => <ErrorFormula texto={parte} />} />
-                  );
-                }
-              }
-              return <span key={indice}>{parte}</span>;
-            })}
-          </span>
+      {segmentos.map((s, indice) => {
+        if (s.tipo === "texto") return <span key={indice}>{s.contenido}</span>;
+        const original = texto.slice(s.inicio, s.fin);
+        return s.modo === "bloque" ? (
+          <BlockMath key={indice} math={s.tex} renderError={() => <ErrorFormula texto={original} />} />
+        ) : (
+          <InlineMath key={indice} math={s.tex} renderError={() => <ErrorFormula texto={original} />} />
         );
       })}
     </span>
